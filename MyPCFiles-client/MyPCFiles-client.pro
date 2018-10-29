@@ -27,13 +27,19 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    navbarwidget.cpp \
-    serverlistwidget.cpp
+        navbarwidget.cpp \
+        serverlistwidget.cpp \
+        fileslistwidget.cpp \
+        server.cpp \
+        sftpinterfacewidget.cpp
 
 HEADERS += \
         mainwindow.h \
-    navbarwidget.h \
-    serverlistwidget.h
+        navbarwidget.h \
+        serverlistwidget.h \
+        fileslistwidget.h \
+        server.h \
+        sftpinterfacewidget.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

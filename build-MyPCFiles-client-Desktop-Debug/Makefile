@@ -51,9 +51,13 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../MyPCFiles-client/main.cpp \
-		../MyPCFiles-client/mainwindow.cpp moc_mainwindow.cpp
+		../MyPCFiles-client/mainwindow.cpp \
+		../MyPCFiles-client/navbarwidget.cpp \
+		../MyPCFiles-client/serverlistwidget.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
+		navbarwidget.o \
+		serverlistwidget.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -113,6 +117,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		../MyPCFiles-client/.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -132,8 +137,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../MyPCFiles-client/MyPCFiles-client.pro ../MyPCFiles-client/mainwindow.h ../MyPCFiles-client/main.cpp \
-		../MyPCFiles-client/mainwindow.cpp
+		../MyPCFiles-client/MyPCFiles-client.pro ../MyPCFiles-client/mainwindow.h \
+		../MyPCFiles-client/navbarwidget.h \
+		../MyPCFiles-client/serverlistwidget.h ../MyPCFiles-client/main.cpp \
+		../MyPCFiles-client/mainwindow.cpp \
+		../MyPCFiles-client/navbarwidget.cpp \
+		../MyPCFiles-client/serverlistwidget.cpp
 QMAKE_TARGET  = MyPCFiles-client
 DESTDIR       = 
 TARGET        = MyPCFiles-client
@@ -203,6 +212,7 @@ Makefile: ../MyPCFiles-client/MyPCFiles-client.pro /usr/lib/x86_64-linux-gnu/qt5
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -285,6 +295,7 @@ Makefile: ../MyPCFiles-client/MyPCFiles-client.pro /usr/lib/x86_64-linux-gnu/qt5
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -323,8 +334,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../MyPCFiles-client/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../MyPCFiles-client/main.cpp ../MyPCFiles-client/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../MyPCFiles-client/mainwindow.h ../MyPCFiles-client/navbarwidget.h ../MyPCFiles-client/serverlistwidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../MyPCFiles-client/main.cpp ../MyPCFiles-client/mainwindow.cpp ../MyPCFiles-client/navbarwidget.cpp ../MyPCFiles-client/serverlistwidget.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -383,6 +394,13 @@ main.o: ../MyPCFiles-client/main.cpp ../MyPCFiles-client/mainwindow.h
 
 mainwindow.o: ../MyPCFiles-client/mainwindow.cpp ../MyPCFiles-client/mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../MyPCFiles-client/mainwindow.cpp
+
+navbarwidget.o: ../MyPCFiles-client/navbarwidget.cpp ../MyPCFiles-client/navbarwidget.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o navbarwidget.o ../MyPCFiles-client/navbarwidget.cpp
+
+serverlistwidget.o: ../MyPCFiles-client/serverlistwidget.cpp ../MyPCFiles-client/serverlistwidget.h \
+		../MyPCFiles-client/server.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o serverlistwidget.o ../MyPCFiles-client/serverlistwidget.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
