@@ -1,6 +1,7 @@
-#define CATCH_CONFIG_MAIN
 #include "catch.h"
 #include <../MyPCFiles-client/server.h>
+
+#define CATCH_CONFIG_MAIN
 
 TEST_CASE("Server class") {
 
