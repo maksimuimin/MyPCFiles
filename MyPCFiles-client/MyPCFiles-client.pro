@@ -27,11 +27,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    server.cpp
+    server.cpp \
+    interfacetest.cpp
 
 HEADERS += \
         mainwindow.h \
-    server.h
+    server.h \
+    catch.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
