@@ -3,7 +3,11 @@
 //
 #include "sftpinterfacewidget.h"
 
+<<<<<<< HEAD
 SFTPInterfaceWidget::SFTPInterfaceWidget(QWidget* parent, Server* _server) {
+=======
+SFTPInterfaceWidget::SFTPInterfaceWidget(QWidget* parent = nullptr, Server* _server = nullptr) {
+>>>>>>> origin/jahongirTulforov
     // TODO default constructor
 }
 
