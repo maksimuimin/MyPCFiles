@@ -27,7 +27,6 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-<<<<<<< HEAD
         navbarwidget.cpp \
         serverlistwidget.cpp \
         server.cpp \
@@ -42,16 +41,11 @@ HEADERS += \
         sftpinterfacewidget.h \
     fake_libssh.h \
     filelistwidget.h
-=======
-    fileslistwidget.cpp \
-    sftpinterfacewidget.cpp
 
 HEADERS += \
         mainwindow.h \ 
     fileslistwidget.h \
-    sftpinterfacewidget.h \
-    ../Test/catch.h
->>>>>>> origin/jahongirTulforov
+    sftpinterfacewidget.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

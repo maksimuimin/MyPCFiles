@@ -157,7 +157,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../MyPCFiles-client/server.h \
 		../MyPCFiles-client/sftpinterfacewidget.h \
 		../MyPCFiles-client/fake_libssh.h \
-		../MyPCFiles-client/filelistwidget.h ../MyPCFiles-client/main.cpp \
+		../MyPCFiles-client/filelistwidget.h \
+		../MyPCFiles-client/mainwindow.h \
+		../MyPCFiles-client/fileslistwidget.h \
+		../MyPCFiles-client/sftpinterfacewidget.h ../MyPCFiles-client/main.cpp \
 		../MyPCFiles-client/mainwindow.cpp \
 		../MyPCFiles-client/navbarwidget.cpp \
 		../MyPCFiles-client/serverlistwidget.cpp \
@@ -355,7 +358,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../MyPCFiles-client/mainwindow.h ../MyPCFiles-client/navbarwidget.h ../MyPCFiles-client/serverlistwidget.h ../MyPCFiles-client/server.h ../MyPCFiles-client/sftpinterfacewidget.h ../MyPCFiles-client/fake_libssh.h ../MyPCFiles-client/filelistwidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../MyPCFiles-client/mainwindow.h ../MyPCFiles-client/navbarwidget.h ../MyPCFiles-client/serverlistwidget.h ../MyPCFiles-client/server.h ../MyPCFiles-client/sftpinterfacewidget.h ../MyPCFiles-client/fake_libssh.h ../MyPCFiles-client/filelistwidget.h ../MyPCFiles-client/mainwindow.h ../MyPCFiles-client/fileslistwidget.h ../MyPCFiles-client/sftpinterfacewidget.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../MyPCFiles-client/main.cpp ../MyPCFiles-client/mainwindow.cpp ../MyPCFiles-client/navbarwidget.cpp ../MyPCFiles-client/serverlistwidget.cpp ../MyPCFiles-client/server.cpp ../MyPCFiles-client/sftpinterfacewidget.cpp ../MyPCFiles-client/filelistwidget.cpp $(DISTDIR)/
 
 
@@ -388,9 +391,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_navbarwidget.cpp moc_serverlistwidget.cpp moc_sftpinterfacewidget.cpp moc_filelistwidget.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_navbarwidget.cpp moc_serverlistwidget.cpp moc_sftpinterfacewidget.cpp moc_filelistwidget.cpp moc_mainwindow.cpp moc_sftpinterfacewidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_navbarwidget.cpp moc_serverlistwidget.cpp moc_sftpinterfacewidget.cpp moc_filelistwidget.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_navbarwidget.cpp moc_serverlistwidget.cpp moc_sftpinterfacewidget.cpp moc_filelistwidget.cpp moc_mainwindow.cpp moc_sftpinterfacewidget.cpp
 moc_mainwindow.cpp: ../MyPCFiles-client/navbarwidget.h \
 		../MyPCFiles-client/serverlistwidget.h \
 		../MyPCFiles-client/server.h \
@@ -415,6 +418,7 @@ moc_serverlistwidget.cpp: ../MyPCFiles-client/server.h \
 moc_sftpinterfacewidget.cpp: ../MyPCFiles-client/filelistwidget.h \
 		../MyPCFiles-client/fake_libssh.h \
 		../MyPCFiles-client/server.h \
+		../MyPCFiles-client/fileslistwidget.h \
 		../MyPCFiles-client/sftpinterfacewidget.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -425,6 +429,24 @@ moc_filelistwidget.cpp: ../MyPCFiles-client/fake_libssh.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/maxim/Dev/Technopark/1_semester/c_cpp/MyPCFiles/MyPCFiles-client -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../MyPCFiles-client/filelistwidget.h -o moc_filelistwidget.cpp
+
+moc_mainwindow.cpp: ../MyPCFiles-client/navbarwidget.h \
+		../MyPCFiles-client/serverlistwidget.h \
+		../MyPCFiles-client/server.h \
+		../MyPCFiles-client/fake_libssh.h \
+		../MyPCFiles-client/mainwindow.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/maxim/Dev/Technopark/1_semester/c_cpp/MyPCFiles/MyPCFiles-client -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../MyPCFiles-client/mainwindow.h -o moc_mainwindow.cpp
+
+moc_sftpinterfacewidget.cpp: ../MyPCFiles-client/filelistwidget.h \
+		../MyPCFiles-client/fake_libssh.h \
+		../MyPCFiles-client/server.h \
+		../MyPCFiles-client/fileslistwidget.h \
+		../MyPCFiles-client/sftpinterfacewidget.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/maxim/Dev/Technopark/1_semester/c_cpp/MyPCFiles/MyPCFiles-client -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../MyPCFiles-client/sftpinterfacewidget.h -o moc_sftpinterfacewidget.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -469,7 +491,8 @@ server.o: ../MyPCFiles-client/server.cpp ../MyPCFiles-client/server.h \
 sftpinterfacewidget.o: ../MyPCFiles-client/sftpinterfacewidget.cpp ../MyPCFiles-client/sftpinterfacewidget.h \
 		../MyPCFiles-client/filelistwidget.h \
 		../MyPCFiles-client/fake_libssh.h \
-		../MyPCFiles-client/server.h
+		../MyPCFiles-client/server.h \
+		../MyPCFiles-client/fileslistwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sftpinterfacewidget.o ../MyPCFiles-client/sftpinterfacewidget.cpp
 
 filelistwidget.o: ../MyPCFiles-client/filelistwidget.cpp ../MyPCFiles-client/filelistwidget.h \

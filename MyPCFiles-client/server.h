@@ -7,7 +7,7 @@
 class Server {
 
 public:
-    Server(QString _username, QString _host, unsigned int _port);
+    Server(QString _username = "user", QString _host = "localhost", unsigned int _port = 22);
     Server(const Server& other) = delete;
     Server(Server&& other);
     ~Server();
