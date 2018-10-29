@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.h"
-#include "../MyPCFiles-client/fileslistwidget.h";
+#include "../MyPCFiles-client/filelistwidget.h";
 #include "../MyPCFiles-client/sftpinterfacewidget.h";
 #include "../MyPCFiles-client/mainwindow.h";
 #include "../MyPCFiles-client/serverlistwidget.h";
@@ -12,11 +12,11 @@ TEST_CASE("FileListWidget class") {
     SECTION("check existence of public methods") {
 
         // if there is no such kind of class test will fail
-        FilesListWidget filesListWidget;
+        FileListWidget fileListWidget;
         // if there is no add method function will fail
-        filesListWidget.add();
+        fileListWidget.add();
         // If there is no destructor test will fail
-        filesListWidget.~FilesListWidget();
+        fileListWidget.~FileListWidget();
 
     }
 }

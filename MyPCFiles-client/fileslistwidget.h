@@ -2,15 +2,15 @@
 // Created by jahongir on 28/10/18.
 //
 
-#ifndef MYPCFILES_FILESLISTWIDGET_H
-#define MYPCFILES_FILESLISTWIDGET_H
+#ifndef MYPCFILE_FILESLISTWIDGET_H
+#define MYPCFILE_FILESLISTWIDGET_H
 
 #include <QWidget>
 
-class FilesListWidget {
+class FileListWidget {
 public:
-    FilesListWidget(QWidget* parent);
-    ~FilesListWidget();
+    FileListWidget(QWidget* parent);
+    ~FileListWidget();
 
     void add(sftp_attributes attrs);
 };
