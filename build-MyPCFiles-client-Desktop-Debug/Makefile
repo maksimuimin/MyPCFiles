@@ -53,12 +53,26 @@ OBJECTS_DIR   = ./
 SOURCES       = ../MyPCFiles-client/main.cpp \
 		../MyPCFiles-client/mainwindow.cpp \
 		../MyPCFiles-client/navbarwidget.cpp \
-		../MyPCFiles-client/serverlistwidget.cpp moc_mainwindow.cpp
+		../MyPCFiles-client/serverlistwidget.cpp \
+		../MyPCFiles-client/server.cpp \
+		../MyPCFiles-client/sftpinterfacewidget.cpp \
+		../MyPCFiles-client/filelistwidget.cpp moc_mainwindow.cpp \
+		moc_navbarwidget.cpp \
+		moc_serverlistwidget.cpp \
+		moc_sftpinterfacewidget.cpp \
+		moc_filelistwidget.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		navbarwidget.o \
 		serverlistwidget.o \
-		moc_mainwindow.o
+		server.o \
+		sftpinterfacewidget.o \
+		filelistwidget.o \
+		moc_mainwindow.o \
+		moc_navbarwidget.o \
+		moc_serverlistwidget.o \
+		moc_sftpinterfacewidget.o \
+		moc_filelistwidget.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -139,10 +153,17 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../MyPCFiles-client/MyPCFiles-client.pro ../MyPCFiles-client/mainwindow.h \
 		../MyPCFiles-client/navbarwidget.h \
-		../MyPCFiles-client/serverlistwidget.h ../MyPCFiles-client/main.cpp \
+		../MyPCFiles-client/serverlistwidget.h \
+		../MyPCFiles-client/server.h \
+		../MyPCFiles-client/sftpinterfacewidget.h \
+		../MyPCFiles-client/fake_libssh.h \
+		../MyPCFiles-client/filelistwidget.h ../MyPCFiles-client/main.cpp \
 		../MyPCFiles-client/mainwindow.cpp \
 		../MyPCFiles-client/navbarwidget.cpp \
-		../MyPCFiles-client/serverlistwidget.cpp
+		../MyPCFiles-client/serverlistwidget.cpp \
+		../MyPCFiles-client/server.cpp \
+		../MyPCFiles-client/sftpinterfacewidget.cpp \
+		../MyPCFiles-client/filelistwidget.cpp
 QMAKE_TARGET  = MyPCFiles-client
 DESTDIR       = 
 TARGET        = MyPCFiles-client
@@ -334,8 +355,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../MyPCFiles-client/mainwindow.h ../MyPCFiles-client/navbarwidget.h ../MyPCFiles-client/serverlistwidget.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../MyPCFiles-client/main.cpp ../MyPCFiles-client/mainwindow.cpp ../MyPCFiles-client/navbarwidget.cpp ../MyPCFiles-client/serverlistwidget.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../MyPCFiles-client/mainwindow.h ../MyPCFiles-client/navbarwidget.h ../MyPCFiles-client/serverlistwidget.h ../MyPCFiles-client/server.h ../MyPCFiles-client/sftpinterfacewidget.h ../MyPCFiles-client/fake_libssh.h ../MyPCFiles-client/filelistwidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../MyPCFiles-client/main.cpp ../MyPCFiles-client/mainwindow.cpp ../MyPCFiles-client/navbarwidget.cpp ../MyPCFiles-client/serverlistwidget.cpp ../MyPCFiles-client/server.cpp ../MyPCFiles-client/sftpinterfacewidget.cpp ../MyPCFiles-client/filelistwidget.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -367,13 +388,43 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_navbarwidget.cpp moc_serverlistwidget.cpp moc_sftpinterfacewidget.cpp moc_filelistwidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
-moc_mainwindow.cpp: ../MyPCFiles-client/mainwindow.h \
+	-$(DEL_FILE) moc_mainwindow.cpp moc_navbarwidget.cpp moc_serverlistwidget.cpp moc_sftpinterfacewidget.cpp moc_filelistwidget.cpp
+moc_mainwindow.cpp: ../MyPCFiles-client/navbarwidget.h \
+		../MyPCFiles-client/serverlistwidget.h \
+		../MyPCFiles-client/server.h \
+		../MyPCFiles-client/fake_libssh.h \
+		../MyPCFiles-client/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/maxim/Dev/Technopark/1_semester/c_cpp/MyPCFiles/MyPCFiles-client -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../MyPCFiles-client/mainwindow.h -o moc_mainwindow.cpp
+
+moc_navbarwidget.cpp: ../MyPCFiles-client/navbarwidget.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/maxim/Dev/Technopark/1_semester/c_cpp/MyPCFiles/MyPCFiles-client -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../MyPCFiles-client/navbarwidget.h -o moc_navbarwidget.cpp
+
+moc_serverlistwidget.cpp: ../MyPCFiles-client/server.h \
+		../MyPCFiles-client/fake_libssh.h \
+		../MyPCFiles-client/serverlistwidget.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/maxim/Dev/Technopark/1_semester/c_cpp/MyPCFiles/MyPCFiles-client -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../MyPCFiles-client/serverlistwidget.h -o moc_serverlistwidget.cpp
+
+moc_sftpinterfacewidget.cpp: ../MyPCFiles-client/filelistwidget.h \
+		../MyPCFiles-client/fake_libssh.h \
+		../MyPCFiles-client/server.h \
+		../MyPCFiles-client/sftpinterfacewidget.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/maxim/Dev/Technopark/1_semester/c_cpp/MyPCFiles/MyPCFiles-client -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../MyPCFiles-client/sftpinterfacewidget.h -o moc_sftpinterfacewidget.cpp
+
+moc_filelistwidget.cpp: ../MyPCFiles-client/fake_libssh.h \
+		../MyPCFiles-client/filelistwidget.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/maxim/Dev/Technopark/1_semester/c_cpp/MyPCFiles/MyPCFiles-client -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../MyPCFiles-client/filelistwidget.h -o moc_filelistwidget.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -389,21 +440,56 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
-main.o: ../MyPCFiles-client/main.cpp ../MyPCFiles-client/mainwindow.h
+main.o: ../MyPCFiles-client/main.cpp ../MyPCFiles-client/mainwindow.h \
+		../MyPCFiles-client/navbarwidget.h \
+		../MyPCFiles-client/serverlistwidget.h \
+		../MyPCFiles-client/server.h \
+		../MyPCFiles-client/fake_libssh.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../MyPCFiles-client/main.cpp
 
-mainwindow.o: ../MyPCFiles-client/mainwindow.cpp ../MyPCFiles-client/mainwindow.h
+mainwindow.o: ../MyPCFiles-client/mainwindow.cpp ../MyPCFiles-client/mainwindow.h \
+		../MyPCFiles-client/navbarwidget.h \
+		../MyPCFiles-client/serverlistwidget.h \
+		../MyPCFiles-client/server.h \
+		../MyPCFiles-client/fake_libssh.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../MyPCFiles-client/mainwindow.cpp
 
 navbarwidget.o: ../MyPCFiles-client/navbarwidget.cpp ../MyPCFiles-client/navbarwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o navbarwidget.o ../MyPCFiles-client/navbarwidget.cpp
 
 serverlistwidget.o: ../MyPCFiles-client/serverlistwidget.cpp ../MyPCFiles-client/serverlistwidget.h \
-		../MyPCFiles-client/server.h
+		../MyPCFiles-client/server.h \
+		../MyPCFiles-client/fake_libssh.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o serverlistwidget.o ../MyPCFiles-client/serverlistwidget.cpp
+
+server.o: ../MyPCFiles-client/server.cpp ../MyPCFiles-client/server.h \
+		../MyPCFiles-client/fake_libssh.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o server.o ../MyPCFiles-client/server.cpp
+
+sftpinterfacewidget.o: ../MyPCFiles-client/sftpinterfacewidget.cpp ../MyPCFiles-client/sftpinterfacewidget.h \
+		../MyPCFiles-client/filelistwidget.h \
+		../MyPCFiles-client/fake_libssh.h \
+		../MyPCFiles-client/server.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sftpinterfacewidget.o ../MyPCFiles-client/sftpinterfacewidget.cpp
+
+filelistwidget.o: ../MyPCFiles-client/filelistwidget.cpp ../MyPCFiles-client/filelistwidget.h \
+		../MyPCFiles-client/fake_libssh.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o filelistwidget.o ../MyPCFiles-client/filelistwidget.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_navbarwidget.o: moc_navbarwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_navbarwidget.o moc_navbarwidget.cpp
+
+moc_serverlistwidget.o: moc_serverlistwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_serverlistwidget.o moc_serverlistwidget.cpp
+
+moc_sftpinterfacewidget.o: moc_sftpinterfacewidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_sftpinterfacewidget.o moc_sftpinterfacewidget.cpp
+
+moc_filelistwidget.o: moc_filelistwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_filelistwidget.o moc_filelistwidget.cpp
 
 ####### Install
 

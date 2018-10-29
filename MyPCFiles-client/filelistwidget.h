@@ -5,15 +5,16 @@
 #ifndef MYPCFILES_FILESLISTWIDGET_H
 #define MYPCFILES_FILESLISTWIDGET_H
 
+#include <QListWidget>
 #include <QWidget>
 #include "fake_libssh.h"
 
-class FilesListWidget {
+class FileListWidget: public QListWidget {
     Q_OBJECT
 
 public:
-    FilesListWidget(QWidget* parent = nullptr);
-    ~FilesListWidget();
+    FileListWidget(QWidget* parent = nullptr);
+    ~FileListWidget();
 
     void add(sftp_attributes attrs);
 };

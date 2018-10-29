@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtCore>
 #include <QMainWindow>
 #include "navbarwidget.h"
 #include "serverlistwidget.h"

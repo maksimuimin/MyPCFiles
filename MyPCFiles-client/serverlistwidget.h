@@ -2,13 +2,17 @@
 #define SERVERLISTWIDGET_H
 
 #include <QWidget>
-#include <QList>
+#include <QVector>
 #include <QString>
+#include <QListWidget>
 #include "server.h"
 
-class ServerListWidget{
+class ServerListWidget: public QListWidget{
+
+    Q_OBJECT
+
 private:
-    QList<Server> list;
+    QVector<Server> list;
 
     void save();
     void load();

@@ -5,15 +5,18 @@
 #ifndef MYPCFILES_SFTPINTERFACEWIDGET_H
 #define MYPCFILES_SFTPINTERFACEWIDGET_H
 
-#include "fileslistwidget.h"
+#include "filelistwidget.h"
 #include <QList>
 #include <QWidget>
 #include "server.h"
 #include "fake_libssh.h"
 
-class SFTPInterfaceWidget {
+class SFTPInterfaceWidget: QWidget {
+
+    Q_OBJECT
+
 private:
-    FilesListWidget filesList;
+    FileListWidget filesList;
     Server* server;
 
 public:

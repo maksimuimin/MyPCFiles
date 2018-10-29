@@ -3,8 +3,9 @@
 
 #include <QPushButton>
 #include <QLabel>
+#include <QMenuBar>
 
-class NavbarWidget {
+class NavbarWidget: public QMenuBar {
     Q_OBJECT
 
 private:

@@ -29,19 +29,18 @@ SOURCES += \
         mainwindow.cpp \
         navbarwidget.cpp \
         serverlistwidget.cpp \
-        fileslistwidget.cpp \
         server.cpp \
-        sftpinterfacewidget.cpp
+        sftpinterfacewidget.cpp \
+    filelistwidget.cpp
 
 HEADERS += \
         mainwindow.h \
         navbarwidget.h \
         serverlistwidget.h \
-        fileslistwidget.h \
         server.h \
         sftpinterfacewidget.h \
-    fake_libssh.h
-
+    fake_libssh.h \
+    filelistwidget.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
