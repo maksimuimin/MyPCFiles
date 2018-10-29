@@ -3,14 +3,16 @@
 
 #include <QtCore>
 #include <QMainWindow>
+#include "navbarwidget.h"
+#include "serverlistwidget.h"
 
 class MainWindow : public QMainWindow{
     Q_OBJECT
 
 private:
-    //ServerListWidget serverList;
-    //NavbarWidget navbar;
-    //QListWidget addServerBtn;
+    ServerListWidget serverList;
+    NavbarWidget navbar;
+    QPushButton addServerBtn;
 
 public:
     MainWindow();

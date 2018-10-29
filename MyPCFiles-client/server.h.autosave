@@ -2,7 +2,7 @@
 #define SERVER_H
 
 class Server{
-    Server() = default;
+    Server();
 };
 
 #endif // SERVER_H

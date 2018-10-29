@@ -4,7 +4,7 @@
 
 #include "fileslistwidget.h"
 
-FilesListWidget::FilesListWidget(QWidget* parent = nullptr) {
+FilesListWidget::FilesListWidget(QWidget* parent) {
     // TODO default constructor
 }
 

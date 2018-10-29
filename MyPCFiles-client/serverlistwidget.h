@@ -6,7 +6,6 @@
 #include <QString>
 #include "server.h"
 
-
 class ServerListWidget{
 private:
     QList<Server> list;

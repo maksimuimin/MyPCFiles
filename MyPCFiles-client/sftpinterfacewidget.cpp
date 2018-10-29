@@ -3,7 +3,7 @@
 //
 #include "sftpinterfacewidget.h"
 
-SFTPInterfaceWidget::SFTPInterfaceWidget(QWidget* parent = nullptr, Server* _server = nullptr) {
+SFTPInterfaceWidget::SFTPInterfaceWidget(QWidget* parent, Server* _server) {
     // TODO default constructor
 }
 

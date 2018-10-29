@@ -39,7 +39,9 @@ HEADERS += \
         serverlistwidget.h \
         fileslistwidget.h \
         server.h \
-        sftpinterfacewidget.h
+        sftpinterfacewidget.h \
+    fake_libssh.h
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

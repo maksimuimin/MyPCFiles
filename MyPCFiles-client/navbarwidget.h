@@ -5,6 +5,8 @@
 #include <QLabel>
 
 class NavbarWidget {
+    Q_OBJECT
+
 private:
     QPushButton menuBtn;
     QLabel logo;

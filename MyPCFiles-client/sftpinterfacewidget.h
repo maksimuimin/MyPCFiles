@@ -8,6 +8,8 @@
 #include "fileslistwidget.h"
 #include <QList>
 #include <QWidget>
+#include "server.h"
+#include "fake_libssh.h"
 
 class SFTPInterfaceWidget {
 private:
@@ -17,7 +19,7 @@ private:
 public:
     QList<sftp_file> files;
 
-    SFTPInterfaceWidget(QWidget* parent, Server* _server);
+    SFTPInterfaceWidget(QWidget* parent = nullptr, Server* _server = nullptr);
     SFTPInterfaceWidget(const SFTPInterfaceWidget& other) = delete;
     SFTPInterfaceWidget(SFTPInterfaceWidget&& other) = delete;
     ~SFTPInterfaceWidget();
