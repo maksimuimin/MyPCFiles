@@ -7,11 +7,11 @@ class Server {
 public:
     Server(QString _username, QString _host, unsigned int _port);
     Server(const Server& other) = delete;
-    Server(Server&& other);
+    Server(Server&& other) = default;
     ~Server();
 
     Server&operator=(const Server& other) = delete;
-    Server&operator=(Server&& other);
+    Server&operator=(Server&& other) = default;
 
     void disconnect();
     void connect();

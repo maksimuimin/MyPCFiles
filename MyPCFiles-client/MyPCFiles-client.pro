@@ -27,8 +27,7 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    server.cpp \
-    interfacetest.cpp
+    server.cpp
 
 HEADERS += \
         mainwindow.h \
