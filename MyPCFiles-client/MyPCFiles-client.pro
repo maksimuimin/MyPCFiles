@@ -26,12 +26,32 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        navbarwidget.cpp \
+        serverlistwidget.cpp \
+        server.cpp \
+        sftpinterfacewidget.cpp \
+    filelistwidget.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+        navbarwidget.h \
+        serverlistwidget.h \
+        server.h \
+        sftpinterfacewidget.h \
+    fake_libssh.h \
+    filelistwidget.h
+
+HEADERS += \
+        mainwindow.h \ 
+    fileslistwidget.h \
+    sftpinterfacewidget.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+SUBDIRS +=
+
+DISTFILES += 

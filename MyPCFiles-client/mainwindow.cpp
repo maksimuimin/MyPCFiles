@@ -1,11 +1,13 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-{
+MainWindow::MainWindow(): QMainWindow(){
+    //TODO write default constructor
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow(){
+    //TODO write default destructor
+}
 
+void MainWindow::addServerBtnOnClick(){
+    //TODO add server to server list
 }
