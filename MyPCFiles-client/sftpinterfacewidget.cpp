@@ -3,11 +3,11 @@
 //
 #include "sftpinterfacewidget.h"
 
-SFTPInterfaceWidget::SFTPInterfaceWidget(QWidget* parent, Server* _server) {
+SFTPInterfaceWidget::SFTPInterfaceWidget(QWidget* parent, SFTPInterface* _interface) {
     // TODO default constructor
 }
 
-void SFTPInterfaceWidget::open(const char* dir) {
+void SFTPInterfaceWidget::open() {
     // TODO open directory
 }
 

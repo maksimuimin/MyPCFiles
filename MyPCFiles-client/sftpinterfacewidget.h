@@ -5,11 +5,9 @@
 #ifndef MYPCFILES_SFTPINTERFACEWIDGET_H
 #define MYPCFILES_SFTPINTERFACEWIDGET_H
 
-#include "filelistwidget.h"
-#include <QList>
 #include <QWidget>
-#include "server.h"
-#include "fake_libssh.h"
+#include "filelistwidget.h"
+#include "sftpinterface.h"
 
 class SFTPInterfaceWidget: QWidget {
 
@@ -17,11 +15,10 @@ class SFTPInterfaceWidget: QWidget {
 
 private:
     FileListWidget filesList;
-    Server* server;
+    SFTPInterface interface;
 
 public:
-    QList<sftp_file> files;
-    SFTPInterfaceWidget(QWidget* parent = nullptr, Server* _server = nullptr);
+    SFTPInterfaceWidget(QWidget* parent = nullptr, SFTPInterface* _interface = nullptr);
     SFTPInterfaceWidget(const SFTPInterfaceWidget& other) = delete;
     SFTPInterfaceWidget(SFTPInterfaceWidget&& other) = delete;
     ~SFTPInterfaceWidget();
@@ -29,7 +26,8 @@ public:
     SFTPInterfaceWidget&operator=(const SFTPInterfaceWidget& other) = delete;
     SFTPInterfaceWidget&operator=(SFTPInterfaceWidget&& other) = delete;
 
-    void open(const char*);
+public slots:
+    void open();
     void close();
     void changeDir();
     void upload();

@@ -2,8 +2,7 @@
 #define SERVER_H
 
 #include <QString>
-#include <libssh/libssh.h>
-#include "fake_libssh.h"
+#include <libssh/sftp.h>
 
 class Server {
 

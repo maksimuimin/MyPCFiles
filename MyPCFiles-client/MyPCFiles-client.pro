@@ -31,7 +31,8 @@ SOURCES += \
         serverlistwidget.cpp \
         server.cpp \
         sftpinterfacewidget.cpp \
-    filelistwidget.cpp
+    filelistwidget.cpp \
+    sftpinterface.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,8 +40,8 @@ HEADERS += \
         serverlistwidget.h \
         server.h \
         sftpinterfacewidget.h \
-    fake_libssh.h \
-    filelistwidget.h
+    filelistwidget.h \
+    sftpinterface.h
 
 HEADERS += \
         mainwindow.h \ 
