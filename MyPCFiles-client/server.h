@@ -2,6 +2,7 @@
 #define SERVER_H
 
 #include <QString>
+#include <libssh/libssh.h>
 #include "fake_libssh.h"
 
 class Server {
