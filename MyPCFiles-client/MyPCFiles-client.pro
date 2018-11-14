@@ -32,7 +32,8 @@ SOURCES += \
         server.cpp \
         sftpinterfacewidget.cpp \
     filelistwidget.cpp \
-    sftpinterface.cpp
+    sftpinterface.cpp \
+    serverlist.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -41,7 +42,8 @@ HEADERS += \
         server.h \
         sftpinterfacewidget.h \
     filelistwidget.h \
-    sftpinterface.h
+    sftpinterface.h \
+    serverlist.h
 
 HEADERS += \
         mainwindow.h \ 

@@ -9,7 +9,6 @@ class NavbarWidget: public QMenuBar {
     Q_OBJECT
 
 private:
-    QPushButton menuBtn;
     QLabel logo;
 public:
     NavbarWidget(QWidget* parent = nullptr);
@@ -19,7 +18,6 @@ public:
 
     NavbarWidget&operator=(const NavbarWidget& other) = delete;
     NavbarWidget&operator=(NavbarWidget& other) = delete;
-public slots:
-    void menuBtnOnClick();
 };
-#endif // NAVBARWIDGET_H
+
+#endif

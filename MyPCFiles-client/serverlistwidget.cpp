@@ -2,20 +2,27 @@
 
 ServerListWidget::ServerListWidget(QWidget* parent){
     //TODO write constructor
+    //Необходимо создать виджет, предоставляющий пользователю интерфейс для работы со списком серверов
+    //Необходимые функции:
+    //1)Удалить сервер
+    //2)Изменить настройки сервера
 }
 
 ServerListWidget::~ServerListWidget(){
     //TODO write destructor
+    //Необходимо освободить всю динамическую память
 }
 
-void ServerListWidget::add(Server server){
+void ServerListWidget::change(const size_t pos){
     //TODO add server to server list
+    //Слот, изменяющий настройки сервера
+    //Для этого необходимо создать диалог, запрашивающий у пользователя новые настройки
+    //Затем нужно вызвать функцию change() класса serverList
 }
 
-void ServerListWidget::remove(size_t pos){
+void ServerListWidget::remove(const size_t pos){
     //TODO remove server from server list
-}
-
-void ServerListWidget::change(size_t pos, QString _host,unsigned int _port, QString _username){
-    //TODO change server №pos settings
+    //Слот, удаляющий сервер из списка
+    //Для этого необходимо создать диалог, запрашивающий у пользователя подтверждение
+    //Затем нужно вызвать функцию remove() класса serverList
 }

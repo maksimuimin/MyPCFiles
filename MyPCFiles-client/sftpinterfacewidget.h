@@ -27,8 +27,8 @@ public:
     SFTPInterfaceWidget&operator=(SFTPInterfaceWidget&& other) = delete;
 
 public slots:
-    void open();
-    void close();
+    void open_connection();
+    void close_connection();
     void changeDir();
     void upload();
     void download();

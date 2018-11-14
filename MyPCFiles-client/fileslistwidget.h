@@ -6,6 +6,7 @@
 #define MYPCFILE_FILESLISTWIDGET_H
 
 #include <QWidget>
+#include <libssh/sftp.h>
 
 class FileListWidget {
 public:
