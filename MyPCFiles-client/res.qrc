@@ -1,2 +1,6 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/img">
+        <file alias="settings.png">res/img/settings.png</file>
+        <file alias="logo.png">res/img/logo.png</file>
+    </qresource>
+</RCC>

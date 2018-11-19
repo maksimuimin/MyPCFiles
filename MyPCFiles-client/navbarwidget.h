@@ -8,14 +8,11 @@
 
 class NavbarWidget: public QMenuBar {
     Q_OBJECT
-
-private:
-    QMenu* settings;
 public:
     NavbarWidget(QWidget* parent = nullptr);
     NavbarWidget(const NavbarWidget& other) = delete;
     NavbarWidget(NavbarWidget&& other) = delete;
-    ~NavbarWidget();
+    ~NavbarWidget() = default;
 
     NavbarWidget&operator=(const NavbarWidget& other) = delete;
     NavbarWidget&operator=(NavbarWidget& other) = delete;

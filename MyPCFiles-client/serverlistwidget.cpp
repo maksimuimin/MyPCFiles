@@ -1,16 +1,26 @@
 #include "serverlistwidget.h"
 
-ServerListWidget::ServerListWidget(QWidget* parent){
+ServerListWidget::ServerListWidget(std::vector<Server> list, QWidget* parent){
     //TODO write constructor
     //Необходимо создать виджет, предоставляющий пользователю интерфейс для работы со списком серверов
     //Необходимые функции:
     //1)Удалить сервер
     //2)Изменить настройки сервера
+    std::for_each(list.begin(), list.end(), [this](const Server& s){
+       this->add(s);
+    });
 }
 
 ServerListWidget::~ServerListWidget(){
     //TODO write destructor
     //Необходимо освободить всю динамическую память
+}
+
+void ServerListWidget::add(const Server server) {
+    QListWidgetItem item;
+    item.setText(server.alias);
+    //TODO написать класс - наследник QListWidgetItem
+    this->addItem()
 }
 
 void ServerListWidget::change(const size_t pos){
