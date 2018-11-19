@@ -9,6 +9,7 @@ class MainWindow : public QMainWindow{
     Q_OBJECT
 
 private:
+    QLabel logo;
     ServerListWidget serverList;
     NavbarWidget navbar;
     QPushButton addServerBtn;
@@ -23,6 +24,7 @@ public:
     MainWindow&operator=(MainWindow&& other) = delete;
 public slots:
     void addServerBtnOnClick();
+    //TODO createNewConnection();
 };
 
 #endif // MAINWINDOW_H
