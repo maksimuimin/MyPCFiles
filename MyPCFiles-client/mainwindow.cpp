@@ -1,11 +1,23 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-{
+MainWindow::MainWindow(): QMainWindow(){
+    //TODO write default constructor
+    //Необходимо отобразить основное окно приложения
+    //Окно содержит следующие элементы:
+    //1)Меню
+    //2)Список серверов пользователя
+    //3)Кнопку добавления нового сервера в список
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow(){
+    //TODO write default destructor
+    //В деструкторе необходимо освободить всю память, запрошенную приложением у ОС
+    //Также необходимо закрыть все открытые ssh соединения, перед этим следует создать диалог, запрашивающий подтверждение у пользователя
+}
 
+void MainWindow::addServerBtnOnClick(){
+    //TODO add server to server list
+    //Слот, вызываемый по нажатию кнопки добавления нового сервера
+    //Необходимо создать диалог, запрашивающий у пользователя все необходимые данные
+    //Затем необходимо корректно вызвать функцию add() класса ServerList
 }

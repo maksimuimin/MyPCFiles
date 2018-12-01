@@ -2,15 +2,18 @@
 // Created by jahongir on 28/10/18.
 //
 
-#ifndef MYPCFILE_FILESLISTWIDGET_H
-#define MYPCFILE_FILESLISTWIDGET_H
+#ifndef MYPCFILES_FILESLISTWIDGET_H
+#define MYPCFILES_FILESLISTWIDGET_H
 
+#include <QListWidget>
 #include <QWidget>
 #include <libssh/sftp.h>
 
-class FileListWidget {
+class FileListWidget: public QListWidget {
+    Q_OBJECT
+
 public:
-    FileListWidget(QWidget* parent);
+    FileListWidget(QWidget* parent = nullptr);
     ~FileListWidget();
 
     void add(sftp_attributes attrs);

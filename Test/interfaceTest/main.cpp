@@ -1,11 +1,14 @@
-#include <stdlib.h>
 #include <iostream>
-#include "catch.h"
-#include "../MyPCFiles-client/mainwindow.h"
-#include <../MyPCFiles-client/server.h>
-#include "../MyPCFiles-client/filelistwidget.h";
-#include "../MyPCFiles-client/sftpinterfacewidget.h";
-#include "../MyPCFiles-client/serverlistwidget.h";
+#include <stdlib.h>
+#include <QCoreApplication>
+#include "../catch.h"
+#include "../../MyPCFiles-client/mainwindow.h"
+#include "../../MyPCFiles-client/navbarwidget.h"
+#include <../../MyPCFiles-client/server.h>
+#include "../../MyPCFiles-client/filelistwidget.h";
+#include "../../MyPCFiles-client/sftpinterfacewidget.h";
+#include "../../MyPCFiles-client/serverlistwidget.h";
+#include "../../MyPCFiles-client/fake_libssh.h"
 
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 
@@ -28,7 +31,7 @@ TEST_CASE("FileListWidget class") {
         // if there is no such kind of class test will fail
         FileListWidget fileListWidget;
         // if there is no add method function will fail
-        fileListWidget.add();
+        fileListWidget.add(sftp_attributes());
         // If there is no destructor test will fail
         fileListWidget.~FileListWidget();
 
@@ -71,8 +74,7 @@ TEST_CASE("MainWindow class") {
 
     SECTION("check existence of public methods") {
 
-        QWidget* parent = nullptr;
-        MainWindow mainWidget(parent);
+        MainWindow mainWidget;
 
         mainWidget.addServerBtnOnClick();
         mainWidget.~MainWindow();
@@ -89,9 +91,9 @@ TEST_CASE("ServerListWidget class") {
 
         ServerListWidget serverListWidget(parent);
 
-        serverListWidget.add(server);
+        //serverListWidget.add(Server());
         serverListWidget.remove(15);
-        serverListWidget.change("localhost", 22, "username");
+        //serverListWidget.change("localhost", 22, "username",0);
 
         serverListWidget.~ServerListWidget();
 
