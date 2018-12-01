@@ -1,14 +1,4 @@
 #include <server.h>
-#include <libssh/libssh.h>
-
-#include <string>
-#include <cstdarg>
-
-#include <QMessageBox>
-#include <QInputDialog>
-#include <QDir>
-
-using std::string;
 
 void Server::connect(){
     //Необходимо создать ssh и затем sftp подключение
@@ -156,11 +146,9 @@ bool Server::auth(){
 
     int rc;
     string password;
-    // Verify the server's identity
+
     if (!verifyServer())
         return false;
-
-    // Authenticate ourselves
 
     rc = ssh_userauth_publickey_auto(ssh, nullptr, nullptr);
     if (rc == SSH_AUTH_ERROR) {
@@ -188,9 +176,6 @@ bool Server::auth(){
 }
 
 bool Server::generateKeys(){
-    //TODO generate Keys
-    //Функция генерирует пару ключей для асссиметричного шифрования и сохраняет
-    //приватный ключ - на сервере, публичный ключ - в поле - объекта
     int rc;
 
     rc = ssh_get_server_publickey(ssh, &publicKey);
@@ -200,9 +185,7 @@ bool Server::generateKeys(){
     return true;
 }
 
-void Server::showErrorDialog(QString message){
-    //TODO dialog of error
-    //При возникновении ошибки необходимо сообщить обэтом пользователю
+void Server::showErrorDialog(QString message) {
     QMessageBox msgBox;
 
     msgBox.setIcon(QMessageBox::Warning);
@@ -222,43 +205,4 @@ QString Server::strConcat(int n_args, ...) {
        res += va_arg(ap, char *);
 
     return QString::fromStdString(res);
-=======
-//Возвращаемое значение приведённых ниже функций окончательно не определено
-//Скорее всего, возвращать надо будет либо int код ошибки, либо bool результат работы
-
-void Server::disconnect(){
-    //TODO cancel sftp/ssh connection
-    //Необходимо закрыть sftp и ssh подключение
-    //Если на данный момент на сервер или с сервере загружаются файлы, то нужно создать диалог, запрашивающий подтверждение пользователя
-    //В зависимости от ответа, необходимо либо отменить закрытие подключения, либо прервать загруску файлов и отключиться от сервера
-}
-
-void Server::connect(){
-    //TODO open sftp/ssh connection
-    //Необходимо создать ssh и затем sftp подключение
-    //Затем необходимо последовательно вызвать функции verifyServer и auth (подробнее см. документацию libssh)
-    //Если это первое подключение к этому серверу, т.е. оно проводилось с помощью логина и пароля, необходимо вызвать функцию generateKeys
-}
-
-void Server::verifyServer(){
-    //TODO check server eventide
-    //Функция производит верификацию сервера (см. документацию libssh, там естьб пример)
-}
-
-void Server::auth(){
-    //TODO provide autitification on the server
-    //Функция производит авторизацию пользователя на сервере (см. документацию libssh, там естьб пример)
-    //Прежде всего, необходимо попытаться авторизироваться по ключу
-    //Если авторизация по ключу не прошла, необходимо авторизироваться по логину и паролю, их нужно запросить у пользователя с помощью диалога
-}
-
-void Server::generateKeys(){
-    //TODO generate Keys
-    //Функция генерирует пару ключей для асссиметричного шифрования и сохраняет приватный ключ - на сервере, публичный ключ - в поле - объекта
-}
-
-void Server::showErrorDialog(){
-    //TODO dialog of error
-    //При возникновении ошибки необходимо сообщить обэтом пользователю
->>>>>>> origin
 }

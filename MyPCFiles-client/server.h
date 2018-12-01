@@ -1,9 +1,14 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <QString>
 #include <libssh/sftp.h>
 #include <string>
+#include <cstdarg>
+
+#include <QString>
+#include <QMessageBox>
+#include <QInputDialog>
+#include <QDir>
 
 using std::string;
 
@@ -20,8 +25,14 @@ public:
     Server& operator=(const Server&) = delete;
     Server& operator=(Server&&) = delete;
 
-    void disconnect();
     void connect();
+    void disconnect();
+    void showErrorDialog(QString message);
+    QString strConcat(int n_args, ...);
+
+    sftp_session getSftp() { return sftp; }
+    ssh_session getSsh(){ return ssh; }
+
 private:
 
     string username;
@@ -34,8 +45,6 @@ private:
     bool verifyServer();
     bool auth();
     bool generateKeys();
-    void showErrorDialog(QString message);
-    QString strConcat(int n_args, ...);
 };
 
 #endif // SERVER_H
