@@ -56,7 +56,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 SUBDIRS +=
 
-DISTFILES += 
+LIBS += -L/usr/lib -lssh
+
+DISTFILES +=
 
 RESOURCES += \
     res.qrc

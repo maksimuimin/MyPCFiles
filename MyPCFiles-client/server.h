@@ -5,7 +5,6 @@
 #include <libssh/sftp.h>
 #include <string>
 #include <cstdarg>
-
 #include <QString>
 #include <QMessageBox>
 #include <QInputDialog>
@@ -21,7 +20,7 @@ public:
         alias(_alias), username(_username), password(_password), host(_host), port(_port) {}
     Server(const Server& other) = delete;
     Server(Server&& other) = delete;
-    ~Server();
+    ~Server() = default;
 
     Server& operator=(const Server&) = delete;
     Server& operator=(Server&&) = delete;
