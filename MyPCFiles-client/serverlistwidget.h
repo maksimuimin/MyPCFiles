@@ -3,26 +3,32 @@
 
 #include <QString>
 #include <QListWidget>
+#include <QLabel>
+#include <QPushButton>
+#include <QHBoxLayout>
 #include "serverlist.h"
 #include <algorithm>
-#include <vector>
+#include <memory>
+
+using std::unique_ptr;
+using std::shared_ptr;
 
 class ServerListWidget: public QListWidget{
 
     Q_OBJECT
-
 public:
-    ServerListWidget(std::vector<Server> list = std::vector<Server>(), QWidget* parent = nullptr);
+    ServerListWidget(QWidget* parent = nullptr);
     ServerListWidget(const ServerListWidget& other) = delete;
     ServerListWidget(ServerListWidget&& other) = delete;
-    ~ServerListWidget();
+    ~ServerListWidget() = default;
 
     ServerListWidget&operator=(const ServerListWidget& other) = delete;
     ServerListWidget&operator=(ServerListWidget&& other) = delete;
 
-    void add(const Server server);
-public slots:
-    void change(const size_t pos);
-    void remove(const size_t pos);
+    void add_new(unique_ptr<Server> server);
+private:
+    ServerList serverlist;
+
+    void add(shared_ptr<Server> server);
 };
 #endif // SERVERLISTWIDGET_H

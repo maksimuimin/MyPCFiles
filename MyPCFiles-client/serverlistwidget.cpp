@@ -1,38 +1,36 @@
 #include "serverlistwidget.h"
 
-ServerListWidget::ServerListWidget(std::vector<Server> list, QWidget* parent){
-    //TODO write constructor
-    //Необходимо создать виджет, предоставляющий пользователю интерфейс для работы со списком серверов
-    //Необходимые функции:
-    //1)Удалить сервер
-    //2)Изменить настройки сервера
-    std::for_each(list.begin(), list.end(), [this](const Server& s){
-       this->add(s);
-    });
+ServerListWidget::ServerListWidget(QWidget* parent) : QListWidget (parent){
+    //std::for_each(serverlist.begin(), serverlist.end(), [this](Server* s){
+       //this->add(unique_ptr<Server>(s));
+    //});
+    this->add_new(unique_ptr<Server>(new Server()));
+    this->add_new(unique_ptr<Server>(new Server()));
+    this->add_new(unique_ptr<Server>(new Server()));
 }
 
-ServerListWidget::~ServerListWidget(){
-    //TODO write destructor
-    //Необходимо освободить всю динамическую память
+void ServerListWidget::add_new(unique_ptr<Server> server){
+    //TODO put in server list
+    shared_ptr<Server> shared_server = shared_ptr<Server>(std::move(server));
+    serverlist.add(shared_server);
+    this->add(shared_server);
 }
 
-void ServerListWidget::add(const Server server) {
-    QListWidgetItem item;
-    item.setText(server.alias);
-    //TODO написать класс - наследник QListWidgetItem
-    this->addItem()
-}
+void ServerListWidget::add(const shared_ptr<Server> server) {
+    QListWidgetItem* item = new QListWidgetItem(this);
+    QWidget* widget = new QWidget;
 
-void ServerListWidget::change(const size_t pos){
-    //TODO add server to server list
-    //Слот, изменяющий настройки сервера
-    //Для этого необходимо создать диалог, запрашивающий у пользователя новые настройки
-    //Затем нужно вызвать функцию change() класса serverList
-}
+    QLabel* title = new QLabel(server->alias, widget);
+    QPushButton* connectBtn = new QPushButton(QIcon(":img/connect.png"),"",widget);
+    QPushButton* settingsBtn = new QPushButton(QIcon(":img/settings.png"),"",widget);
+    QPushButton* deleteBtn = new QPushButton(QIcon(":img/delete.png"),"",widget);
+    QHBoxLayout* mainLayout = new QHBoxLayout(widget);
+    mainLayout->addWidget(title);
+    mainLayout->addStretch();
+    mainLayout->addWidget(connectBtn);
+    mainLayout->addWidget(settingsBtn);
+    mainLayout->addWidget(deleteBtn);
 
-void ServerListWidget::remove(const size_t pos){
-    //TODO remove server from server list
-    //Слот, удаляющий сервер из списка
-    //Для этого необходимо создать диалог, запрашивающий у пользователя подтверждение
-    //Затем нужно вызвать функцию remove() класса serverList
+    item->setSizeHint(widget->sizeHint());
+    this->setItemWidget(item, widget);
 }

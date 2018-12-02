@@ -2,5 +2,8 @@
     <qresource prefix="/img">
         <file alias="settings.png">res/img/settings.png</file>
         <file alias="logo.png">res/img/logo.png</file>
+        <file alias="disconnect.png">res/img/disconnect.png</file>
+        <file alias="delete.png">res/img/delete.png</file>
+        <file alias="connect.png">res/img/connect.png</file>
     </qresource>
 </RCC>

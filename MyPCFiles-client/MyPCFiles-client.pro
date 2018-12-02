@@ -47,7 +47,6 @@ HEADERS += \
 
 HEADERS += \
         mainwindow.h \ 
-    fileslistwidget.h \
     sftpinterfacewidget.h
 
 # Default rules for deployment.

@@ -9,9 +9,9 @@ class Server {
 public:
     QString alias;
 
-    Server(): username(""), host(""), port(0), alias("New server") {}
-    Server(QString _username, QString _host, unsigned int _port, QString _alias):
-        username(_username), host(_host), port(_port), alias(_alias) {}
+    Server(): alias("New server"), username(""), password(""), host(""), port(0) {}
+    Server(QString _username, QString _password, QString _host, unsigned int _port, QString _alias):
+        alias(_alias), username(_username), password(_password), host(_host), port(_port) {}
     Server(const Server& other) = delete;
     Server(Server&& other) = delete;
     ~Server();
@@ -24,6 +24,7 @@ public:
 private:
 
     QString username;
+    QString password;
     QString host;
     unsigned int port;
     ssh_session ssh;
