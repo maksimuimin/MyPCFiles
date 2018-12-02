@@ -71,7 +71,7 @@ void SFTPInterface::upload(string serverDir, string fileName){
      
      serverDir = serverDir + "/" + fileName;
      
-     fd = open(serverDir, O_CREAT);
+     fd = open(serverDir.c_str(), O_CREAT);
      if (fd < 0) {
          QString errorMsg = server->strConcat(3, "Can't open file for writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
          server->showErrorDialog(errorMsg);
@@ -129,7 +129,7 @@ void SFTPInterface::download(string fileName){
      
      string PCDir = "~/Downloads/" + fileName;
      
-     fd = open(PCDir, O_CREAT);
+     fd = open(PCDir.c_str(), O_CREAT);
      if (fd < 0) {
          QString errorMsg = server->strConcat(3, "Can't open file for writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
          server->showErrorDialog(errorMsg);
