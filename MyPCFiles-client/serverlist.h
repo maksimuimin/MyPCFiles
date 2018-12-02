@@ -1,26 +1,29 @@
 #ifndef SERVERLIST_H
 #define SERVERLIST_H
 
-#include <QVector>
+#include <vector>
+#include <memory>
 #include "server.h"
 
+using std::vector;
+using std::shared_ptr;
+
 class ServerList{
-
 private:
-    QVector<Server> list;
-
-    void add(QString _host, unsigned int _port, QString _username);
-    void remove(size_t pos);
-    void change(size_t pos, QString _host = "", unsigned int _port = 0, QString _username = "");
-
+    vector<shared_ptr<Server>> list;
 public:
     ServerList();
-    ServerList(const ServerList& other) = delete;
-    ServerList(ServerList&& other) = delete;
+    ServerList(const ServerList&) = delete;
+    ServerList(ServerList&&) = delete;
     ~ServerList();
 
-    ServerList&operator=(const ServerList& other) = delete;
-    ServerList&operator=(ServerList&& other) = delete;
+    ServerList&operator=(const ServerList&) = delete;
+    ServerList&operator=(ServerList&&) = delete;
+
+    auto begin() -> decltype(list.begin()) {return list.begin(); }
+    auto end() -> decltype(list.end()) {return list.end(); }
+
+    void add(shared_ptr<Server> server);
 };
 
 #endif // SERVERLIST_H

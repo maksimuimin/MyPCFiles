@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_NavbarWidget_t {
     QByteArrayData data[3];
-    char stringdata0[29];
+    char stringdata0[37];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,11 +32,12 @@ struct qt_meta_stringdata_NavbarWidget_t {
 static const qt_meta_stringdata_NavbarWidget_t qt_meta_stringdata_NavbarWidget = {
     {
 QT_MOC_LITERAL(0, 0, 12), // "NavbarWidget"
-QT_MOC_LITERAL(1, 13, 14), // "menuBtnOnClick"
-QT_MOC_LITERAL(2, 28, 0) // ""
+QT_MOC_LITERAL(1, 13, 22), // "settings_menu_on_click"
+QT_MOC_LITERAL(2, 36, 0) // ""
 
     },
-    "NavbarWidget\0menuBtnOnClick\0"
+    "NavbarWidget\0settings_menu_on_click\0"
+    ""
 };
 #undef QT_MOC_LITERAL
 
@@ -54,7 +55,7 @@ static const uint qt_meta_data_NavbarWidget[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   19,    2, 0x0a /* Public */,
+       1,    0,   19,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -68,7 +69,7 @@ void NavbarWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         NavbarWidget *_t = static_cast<NavbarWidget *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->menuBtnOnClick(); break;
+        case 0: _t->settings_menu_on_click(); break;
         default: ;
         }
     }

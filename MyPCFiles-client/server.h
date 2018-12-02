@@ -1,6 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <libssh/libssh.h>
 #include <libssh/sftp.h>
 #include <string>
 #include <cstdarg>
@@ -15,9 +16,9 @@ using std::string;
 class Server {
 
 public:
-    Server(): username(""), host(""), port(0) {}
-    Server(string _username, string _host, unsigned int _port):
-        username(_username), host(_host), port(_port) {}
+    Server(): alias("New server"), username(""), password(""), host(""), port(0) {}
+    Server(QString _username, QString _password, QString _host, unsigned int _port, QString _alias):
+        alias(_alias), username(_username), password(_password), host(_host), port(_port) {}
     Server(const Server& other) = delete;
     Server(Server&& other) = delete;
     ~Server();
@@ -32,11 +33,13 @@ public:
 
     sftp_session getSftp() { return sftp; }
     ssh_session getSsh(){ return ssh; }
+    QString getAlias(){ return alias; }
 
 private:
-
-    string username;
-    string host;
+    QString alias;
+    QString username;
+    QString password;
+    QString host;
     unsigned int port;
     ssh_session ssh;
     ssh_key publicKey;

@@ -67,7 +67,6 @@ HEADERS += \
 
 HEADERS += \
         mainwindow.h \ 
-    fileslistwidget.h \
     sftpinterfacewidget.h
 
 # Default rules for deployment.
@@ -79,3 +78,6 @@ SUBDIRS += \
     test/test.pro
 
 DISTFILES += 
+
+RESOURCES += \
+    res.qrc
