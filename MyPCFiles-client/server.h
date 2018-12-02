@@ -10,14 +10,14 @@
 #include <QInputDialog>
 #include <QDir>
 
+using std::string;
+
 class Server {
 
 public:
-    QString alias;
-
-    Server(): alias("New server"), username(""), password(""), host(""), port(0) {}
-    Server(QString _username, QString _password, QString _host, unsigned int _port, QString _alias):
-        alias(_alias), username(_username), password(_password), host(_host), port(_port) {}
+    Server(): username(""), host(""), port(0) {}
+    Server(string _username, string _host, unsigned int _port):
+        username(_username), host(_host), port(_port) {}
     Server(const Server& other) = delete;
     Server(Server&& other) = delete;
     ~Server();
@@ -34,9 +34,9 @@ public:
     ssh_session getSsh(){ return ssh; }
 
 private:
-    QString username;
-    QString password;
-    QString host;
+
+    string username;
+    string host;
     unsigned int port;
     ssh_session ssh;
     ssh_key publicKey;
