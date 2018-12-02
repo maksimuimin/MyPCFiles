@@ -4,7 +4,8 @@
 #include <QList>
 #include "server.h"
 #include "string"
-
+#include <sys/stat.h>
+#include <fcntl.h>
 using std::string;
 
 class SFTPInterface {
