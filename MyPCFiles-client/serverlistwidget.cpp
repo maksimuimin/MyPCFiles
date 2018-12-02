@@ -20,7 +20,7 @@ void ServerListWidget::add(const shared_ptr<Server> server) {
     QListWidgetItem* item = new QListWidgetItem(this);
     QWidget* widget = new QWidget;
 
-    QLabel* title = new QLabel(server->alias, widget);
+    QLabel* title = new QLabel(server->getAlias(), widget);
     QPushButton* connectBtn = new QPushButton(QIcon(":img/connect.png"),"",widget);
     QPushButton* settingsBtn = new QPushButton(QIcon(":img/settings.png"),"",widget);
     QPushButton* deleteBtn = new QPushButton(QIcon(":img/delete.png"),"",widget);
