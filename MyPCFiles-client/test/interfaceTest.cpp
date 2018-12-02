@@ -1,31 +1,10 @@
-//#include <stdlib.h>
-//#include <iostream>
-//#include "catch.h"
 //#include "../MyPCFiles-client/mainwindow.h"
-//#include <../MyPCFiles-client/server.h>
+//#include "../MyPCFiles-client/server.h"
 //#include "../MyPCFiles-client/filelistwidget.h";
 //#include "../MyPCFiles-client/sftpinterfacewidget.h";
 //#include "../MyPCFiles-client/serverlistwidget.h";
-
-//#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-
 #include <QtTest/QtTest>
 
-class TestQString: public QObject
-{
-    Q_OBJECT
-private slots:
-    void toUpper();
-};
-
-void TestQString::toUpper()
-{
-    QString str = "Hello";
-    QCOMPARE(str.toUpper(), QString("HELLO"));
-}
-
-QTEST_MAIN(TestQString)
-#include "interfaceTest.moc"
 
 //TEST_CASE("Server class") {
 
@@ -39,6 +18,26 @@ QTEST_MAIN(TestQString)
 //    server.~Server();
 //}
 
+//class ServerClassTest: public QObject {
+//    Q_OBJECT
+
+//private slots:
+//    void
+
+//};
+
+class TestQString: public QObject
+{
+    Q_OBJECT
+private slots:
+    void toUpper() {
+        QString str = "Hello";
+        QCOMPARE(str.toUpper(), QString("HELLO"));
+    }
+};
+
+QTEST_MAIN(TestQString)
+#include "interfaceTest.moc"
 
 
 //TEST_CASE("FileListWidget class") {

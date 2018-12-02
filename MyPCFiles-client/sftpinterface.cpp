@@ -40,7 +40,7 @@ void SFTPInterface::changeDir(string path){
         return;
     }
 
-    while ((attributes = sftp_readdir(server->getSftp(), dir)) != NULL)
+    while ((attributes = sftp_readdir(server->getSftp(), dir)) != nullptr)
         files.push_back(attributes);
 
     rc = sftp_closedir(dir);

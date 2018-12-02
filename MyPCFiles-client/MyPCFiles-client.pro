@@ -33,7 +33,18 @@ SOURCES += \
         sftpinterfacewidget.cpp \
     filelistwidget.cpp \
     sftpinterface.cpp \
-    serverlist.cpp
+    serverlist.cpp \
+    test/interfaceTest.cpp \
+    filelistwidget.cpp \
+    fileslistwidget.cpp \
+    main.cpp \
+    mainwindow.cpp \
+    navbarwidget.cpp \
+    server.cpp \
+    serverlist.cpp \
+    serverlistwidget.cpp \
+    sftpinterface.cpp \
+    sftpinterfacewidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,7 +54,16 @@ HEADERS += \
         sftpinterfacewidget.h \
     filelistwidget.h \
     sftpinterface.h \
-    serverlist.h
+    serverlist.h \
+    filelistwidget.h \
+    fileslistwidget.h \
+    mainwindow.h \
+    navbarwidget.h \
+    server.h \
+    serverlist.h \
+    serverlistwidget.h \
+    sftpinterface.h \
+    sftpinterfacewidget.h
 
 HEADERS += \
         mainwindow.h \ 
@@ -55,6 +75,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-SUBDIRS +=
+SUBDIRS += \
+    test/test.pro
 
 DISTFILES += 
