@@ -2,6 +2,7 @@
 #define SERVER_H
 
 #include <libssh/libssh.h>
+#include <libssh/sftp.h>
 #include <string>
 #include <cstdarg>
 
