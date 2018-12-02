@@ -5,11 +5,12 @@
 #include <libssh/sftp.h>
 #include <string>
 #include <cstdarg>
-
 #include <QString>
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QDir>
+#include <memory>
+#include <QErrorMessage>
 
 using std::string;
 
@@ -21,21 +22,23 @@ public:
         alias(_alias), username(_username), password(_password), host(_host), port(_port) {}
     Server(const Server& other) = delete;
     Server(Server&& other) = delete;
-    ~Server();
+    ~Server() = default;
 
     Server& operator=(const Server&) = delete;
     Server& operator=(Server&&) = delete;
 
     void connect();
     void disconnect();
-    void showErrorDialog(QString message);
-    QString strConcat(int n_args, ...);
 
     sftp_session getSftp() { return sftp; }
     ssh_session getSsh(){ return ssh; }
     QString getAlias(){ return alias; }
+    bool is_connected() {return connected; }
 
+    static void SERVER_ERROR(string message);
+    static void SERVER_ERROR(int n_args, ...);
 private:
+    bool connected = false;
     QString alias;
     QString username;
     QString password;
@@ -49,5 +52,7 @@ private:
     bool auth();
     bool generateKeys();
 };
+
+Q_DECLARE_METATYPE(Server*);
 
 #endif // SERVER_H

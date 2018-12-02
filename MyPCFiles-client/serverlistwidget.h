@@ -9,6 +9,7 @@
 #include "serverlist.h"
 #include <algorithm>
 #include <memory>
+#include <QVariant>
 
 using std::unique_ptr;
 using std::shared_ptr;
@@ -30,5 +31,7 @@ private:
     ServerList serverlist;
 
     void add(shared_ptr<Server> server);
+private slots:
+    void serverConnectButtonOnClick();
 };
 #endif // SERVERLISTWIDGET_H
