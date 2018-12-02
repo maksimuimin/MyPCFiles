@@ -1,8 +1,14 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <QString>
 #include <libssh/sftp.h>
+#include <string>
+#include <cstdarg>
+
+#include <QString>
+#include <QMessageBox>
+#include <QInputDialog>
+#include <QDir>
 
 class Server {
 
@@ -16,13 +22,18 @@ public:
     Server(Server&& other) = delete;
     ~Server();
 
-    Server&operator=(const Server& other) = delete;
-    Server&operator=(Server&& other) = delete;
+    Server& operator=(const Server&) = delete;
+    Server& operator=(Server&&) = delete;
 
-    void disconnect();
     void connect();
-private:
+    void disconnect();
+    void showErrorDialog(QString message);
+    QString strConcat(int n_args, ...);
 
+    sftp_session getSftp() { return sftp; }
+    ssh_session getSsh(){ return ssh; }
+
+private:
     QString username;
     QString password;
     QString host;
@@ -31,10 +42,9 @@ private:
     ssh_key publicKey;
     sftp_session sftp;
 
-    void verifyServer();
-    void auth();
-    void generateKeys();
-    void showErrorDialog();
+    bool verifyServer();
+    bool auth();
+    bool generateKeys();
 };
 
 #endif // SERVER_H
