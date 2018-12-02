@@ -17,24 +17,20 @@ void Server::connect(){
     rc = ssh_connect(ssh);
 
     if (rc != SSH_OK) {
-        QString errorMsg = strConcat(2, "Error connecting to ", ssh_get_error(ssh));
-        showErrorDialog(errorMsg);
+        SERVER_ERROR(2, "Error connecting to ", ssh_get_error(ssh));
         return;
     }
 
     sftp = sftp_new(ssh);
     if (sftp == nullptr) {;
-        QString errorMsg = strConcat(2, "Error allocating SFTP session: ", ssh_get_error(ssh));
-        showErrorDialog(errorMsg);
+        SERVER_ERROR(2, "Error allocating SFTP session: ", ssh_get_error(ssh));
         return;
     }
 
     rc = sftp_init(sftp);
     if (rc != SSH_OK) {
 
-        QString errorMsg = strConcat(2, "Error allocating SFTP session: ", ssh_get_error(sftp));
-        showErrorDialog(errorMsg);
-
+        SERVER_ERROR(2, "Error allocating SFTP session: ", ssh_get_error(sftp));
         sftp_free(sftp);
         return;
     }
@@ -53,6 +49,7 @@ void Server::disconnect(){
     ssh_disconnect(ssh);
     ssh_free(ssh);
     sftp_free(sftp);
+    connected = false;
 }
 
 bool Server::verifyServer(){
@@ -80,7 +77,7 @@ bool Server::verifyServer(){
             break;
 
         case SSH_KNOWN_HOSTS_CHANGED:
-            showErrorDialog("Host key for server changed. For security reasons, connection will be stopped");
+            SERVER_ERROR("Host key for server changed. For security reasons, connection will be stopped");
             ssh_clean_pubkey_hash(&hash);
             return false;
 
@@ -88,12 +85,12 @@ bool Server::verifyServer(){
         // An attacker might change the default server key to
         // confuse your client into thinking the key does not exist
         case SSH_KNOWN_HOSTS_OTHER:
-            showErrorDialog("The host key for this server was not found!!!");
+            SERVER_ERROR("The host key for this server was not found!!!");
             ssh_clean_pubkey_hash(&hash);
             return false;
 
         case SSH_KNOWN_HOSTS_NOT_FOUND:
-            showErrorDialog("Could not find known host file!");
+            SERVER_ERROR("Could not find known host file!");
             return false;
 
         case SSH_KNOWN_HOSTS_UNKNOWN: {
@@ -113,8 +110,7 @@ bool Server::verifyServer(){
               case QMessageBox::Yes:
                     rc = ssh_session_update_known_hosts(ssh);
                     if (rc < 0) {
-                        QString errorMsg = strConcat(2, "Error: ", strerror(errno));
-                        showErrorDialog(errorMsg);
+                        SERVER_ERROR(2, "Error: ", strerror(errno));
                         return false;
                     }
                   break;
@@ -126,8 +122,7 @@ bool Server::verifyServer(){
         }
 
         case SSH_KNOWN_HOSTS_ERROR:
-            QString errorMsg = strConcat(2, "Error: ", ssh_get_error(ssh));
-            showErrorDialog(errorMsg);
+            SERVER_ERROR(2, "Error: ", ssh_get_error(ssh));
             ssh_clean_pubkey_hash(&hash);
             return false;
     }
@@ -163,15 +158,13 @@ bool Server::auth(){
 
             rc = ssh_userauth_password(ssh, nullptr, password.c_str());
             if (rc != SSH_AUTH_SUCCESS) {
-                QString errorMsg = strConcat(2, "Error authenticating with password: ", ssh_get_error(ssh));
-                showErrorDialog(errorMsg);
-
+                SERVER_ERROR(2, "Error authenticating with password: ", ssh_get_error(ssh));
                 return false;
             }
         } else
             return false;
     }
-
+    connected = true;
     return true;
 }
 
@@ -185,17 +178,7 @@ bool Server::generateKeys(){
     return true;
 }
 
-void Server::showErrorDialog(QString message) {
-    QMessageBox msgBox;
-
-    msgBox.setIcon(QMessageBox::Warning);
-    msgBox.setText("Error");
-    msgBox.setInformativeText(message);
-    msgBox.setStandardButtons(QMessageBox::Ok);
-    msgBox.setDefaultButton(QMessageBox::Ok);
-}
-
-QString Server::strConcat(int n_args, ...) {
+void Server::SERVER_ERROR(int n_args, ...) {
     va_list ap;
     va_start(ap, n_args);
 
@@ -204,5 +187,12 @@ QString Server::strConcat(int n_args, ...) {
     for(int i = 0; i < n_args; i++)
        res += va_arg(ap, char *);
 
-    return QString::fromStdString(res);
+    SERVER_ERROR(res);
+}
+
+void Server::SERVER_ERROR(string message){
+    QErrorMessage dialog;
+    dialog.setModal(true);
+    dialog.showMessage(QString::fromStdString(message));
+    dialog.exec();
 }

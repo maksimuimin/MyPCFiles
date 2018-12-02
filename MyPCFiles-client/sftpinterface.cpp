@@ -27,16 +27,14 @@ void SFTPInterface::changeDir(string path){
     int rc;
     dir = sftp_opendir(server->getSftp(), path.c_str());
     if (!dir) {
-        QString errorMsg = server->strConcat(2, "Directory not opened: ",
+        Server::SERVER_ERROR(2, "Directory not opened: ",
                                      ssh_get_error(server->getSsh()));
-        server->showErrorDialog(errorMsg);
         return;
     }
 
     if (!sftp_dir_eof(dir)) {
-        QString errorMsg = server->strConcat(2, "Can't list directory: ",
+        Server::SERVER_ERROR(2, "Can't list directory: ",
                                      ssh_get_error(server->getSsh()));
-        server->showErrorDialog(errorMsg);
         sftp_closedir(dir);
         return;
     }
@@ -46,9 +44,8 @@ void SFTPInterface::changeDir(string path){
 
     rc = sftp_closedir(dir);
     if (rc != SSH_OK) {
-        QString errorMsg = server->strConcat(2, "Can't close directory: ",
+        Server::SERVER_ERROR(2, "Can't close directory: ",
                                      ssh_get_error(server->getSsh()));
-        server->showErrorDialog(errorMsg);
         return;
     }
 }
@@ -68,8 +65,7 @@ void SFTPInterface::upload(string serverDir, string fileName){
     file = sftp_open(server->getSftp(), PCDir.c_str(), access_type, 0);
 
     if (file == nullptr) {
-        QString errorMsg = server->strConcat(3, "Can't open file for reading: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
-        server->showErrorDialog(errorMsg);
+        Server::SERVER_ERROR(3, "Can't open file for reading: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
         return;
     }
 
@@ -77,8 +73,7 @@ void SFTPInterface::upload(string serverDir, string fileName){
 
     fd = open(serverDir.c_str(), O_CREAT);
     if (fd < 0) {
-        QString errorMsg = server->strConcat(3, "Can't open file for writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
-        server->showErrorDialog(errorMsg);
+        Server::SERVER_ERROR(3, "Can't open file for writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
         return;
     }
 
@@ -89,17 +84,15 @@ void SFTPInterface::upload(string serverDir, string fileName){
         if (nbytes == 0) {
             break; // EOF
         } else if (nbytes < 0) {
-            QString errorMsg = server->strConcat(3, "Error while reading file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+            Server::SERVER_ERROR(3, "Error while reading file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
             sftp_close(file);
-            server->showErrorDialog(errorMsg);
             return;
         }
 
         nwritten = write(fd, buffer, nbytes);
         if (nwritten != nbytes) {
 
-            QString errorMsg = server->strConcat(3, "Error writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
-            server->showErrorDialog(errorMsg);
+            Server::SERVER_ERROR(3, "Error writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
             sftp_close(file);
             return;
         }
@@ -107,8 +100,7 @@ void SFTPInterface::upload(string serverDir, string fileName){
 
     rc = sftp_close(file);
     if (rc != SSH_OK) {
-        QString errorMsg = server->strConcat(3, "Can't close the read file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
-        server->showErrorDialog(errorMsg);
+        Server::SERVER_ERROR(3, "Can't close the read file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
         return;
     }
 }
@@ -128,8 +120,7 @@ void SFTPInterface::download(string fileName){
     file = sftp_open(server->getSftp(), serverDir.c_str(), access_type, 0);
 
     if (file == NULL) {
-        QString errorMsg = server->strConcat(3, "Can't open file for reading: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
-        server->showErrorDialog(errorMsg);
+        Server::SERVER_ERROR(3, "Can't open file for reading: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
         return;
     }
      
@@ -137,8 +128,7 @@ void SFTPInterface::download(string fileName){
 
     fd = open(PCDir.c_str(), O_CREAT);
     if (fd < 0) {
-        QString errorMsg = server->strConcat(3, "Can't open file for writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
-        server->showErrorDialog(errorMsg);
+        Server::SERVER_ERROR(3, "Can't open file for writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
         return;
     }
 
@@ -148,16 +138,13 @@ void SFTPInterface::download(string fileName){
         if (nbytes == 0) {
             break; // EOF
         } else if (nbytes < 0) {
-            QString errorMsg = server->strConcat(3, "Error while reading file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+            Server::SERVER_ERROR(3, "Error while reading file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
             sftp_close(file);
-            server->showErrorDialog(errorMsg);
-            return;
         }
 
         nwritten = write(fd, buffer, nbytes);
         if (nwritten != nbytes) {
-            QString errorMsg = server->strConcat(3, "Error writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
-            server->showErrorDialog(errorMsg);
+            Server::SERVER_ERROR(3, "Error writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
             sftp_close(file);
             return;
         }
@@ -165,8 +152,7 @@ void SFTPInterface::download(string fileName){
 
     rc = sftp_close(file);
     if (rc != SSH_OK) {
-        QString errorMsg = server->strConcat(3, "Can't close the read file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
-        server->showErrorDialog(errorMsg);
+        Server::SERVER_ERROR(3, "Can't close the read file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
         return;
     }
 }

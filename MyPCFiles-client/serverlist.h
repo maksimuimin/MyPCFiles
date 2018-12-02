@@ -24,6 +24,7 @@ public:
     auto end() -> decltype(list.end()) {return list.end(); }
 
     void add(shared_ptr<Server> server);
+    shared_ptr<Server> get(int pos) {return list[pos]; }
 };
 
 #endif // SERVERLIST_H

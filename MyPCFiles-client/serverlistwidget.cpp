@@ -31,6 +31,28 @@ void ServerListWidget::add(const shared_ptr<Server> server) {
     mainLayout->addWidget(settingsBtn);
     mainLayout->addWidget(deleteBtn);
 
+    widget->setProperty("server",QVariant::fromValue(server.get()));
+    connect(connectBtn, SIGNAL(clicked()),
+            this, SLOT(serverConnectButtonOnClick()));
+
     item->setSizeHint(widget->sizeHint());
     this->setItemWidget(item, widget);
+}
+
+void ServerListWidget::serverConnectButtonOnClick(){
+    shared_ptr<Server> server = nullptr;
+    try {
+        //server = shared_ptr<Server>(sh(((QWidget*)sender()->parent())->property("server").data()));
+        server = shared_ptr<Server>(*((Server**)(((QWidget*)(sender()->parent()))->property("server").data())));
+    } catch (...) {
+        Server::SERVER_ERROR("Critical error: can't find Server data in this widget");
+    }
+    if(server){
+        if(server->is_connected()){
+            server->disconnect();
+        }
+        else {
+            server->connect();
+        }
+    }
 }
