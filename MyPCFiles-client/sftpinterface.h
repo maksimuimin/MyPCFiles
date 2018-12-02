@@ -1,18 +1,20 @@
 #ifndef SFTPINTERFACE_H
 #define SFTPINTERFACE_H
 
-#include <list>
+#include <QList>
 #include "server.h"
+#include "string"
 
-using std::list;
+using std::string;
 
 class SFTPInterface {
 private:
     Server* server;
-    list<sftp_file> files;
+    QList<sftp_attributes> files;
     string nameDir;
+
 public:
-    SFTPInterface(Server* _server = nullptr): server(_server), files(nullptr) {}//TODO заменить указатель на умный из stl
+    SFTPInterface(Server* _server = nullptr): server(_server) {}//TODO заменить указатель на умный из stl
     SFTPInterface(const SFTPInterface& other) = delete;
     SFTPInterface(SFTPInterface&& other) = delete;
     ~SFTPInterface();
@@ -22,7 +24,7 @@ public:
 
     void open_connection();
     void close_connection();
-    void changeDir();
+    void changeDir(string path);
     void upload(string, string);
     void download(string);
 };
