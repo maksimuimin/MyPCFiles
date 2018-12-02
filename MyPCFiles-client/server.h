@@ -1,7 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <libssh/sftp.h>
+#include <libssh/libssh.h>
 #include <string>
 #include <cstdarg>
 

@@ -18,12 +18,12 @@ class ServerListWidget: public QListWidget{
     Q_OBJECT
 public:
     ServerListWidget(QWidget* parent = nullptr);
-    ServerListWidget(const ServerListWidget& other) = delete;
-    ServerListWidget(ServerListWidget&& other) = delete;
+    ServerListWidget(const ServerListWidget&) = delete;
+    ServerListWidget(ServerListWidget&&) = delete;
     ~ServerListWidget() = default;
 
-    ServerListWidget&operator=(const ServerListWidget& other) = delete;
-    ServerListWidget&operator=(ServerListWidget&& other) = delete;
+    ServerListWidget&operator=(const ServerListWidget&) = delete;
+    ServerListWidget&operator=(ServerListWidget&&) = delete;
 
     void add_new(unique_ptr<Server> server);
 private:
