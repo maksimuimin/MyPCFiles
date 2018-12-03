@@ -49,6 +49,7 @@ void MainWindow::addServerBtnOnClick(){
                                               dialog.port->text().toInt(),
                                               dialog.serverName->text()));
         serverList->add_new(std::move(server));
+        BOOST_LOG_TRIVIAL(info) << "Added new server: " << dialog.hostName;
     }
 }
 
