@@ -10,16 +10,18 @@ void Server::connect(){
 
     if (ssh == nullptr)
         return;
-
     int rc;
 
-    ssh_options_set(ssh, SSH_OPTIONS_HOST, &host);
+    ssh_options_set(ssh, SSH_OPTIONS_HOST, host.toUtf8().constData());
     rc = ssh_connect(ssh);
 
     if (rc != SSH_OK) {
-        SERVER_ERROR(2, "Error connecting to ", ssh_get_error(ssh));
+        SERVER_ERROR(3, "Error connecting to ", ssh_get_error(ssh));
         return;
     }
+
+    if (!auth())
+        return;
 
     sftp = sftp_new(ssh);
     if (sftp == nullptr) {;
@@ -34,8 +36,7 @@ void Server::connect(){
         sftp_free(sftp);
         return;
     }
-
-    auth();
+    SERVER_ERROR(1, "Connected to server");
 }
 
 void Server::disconnect(){
@@ -140,31 +141,22 @@ bool Server::auth(){
     //паролю, их нужно запросить у пользователя с помощью диалога
 
     int rc;
-    string password;
 
     if (!verifyServer())
         return false;
 
-    rc = ssh_userauth_publickey_auto(ssh, nullptr, nullptr);
-    if (rc == SSH_AUTH_ERROR) {
+    rc = ssh_userauth_publickey_auto(ssh, nullptr, "");
+    if (rc != SSH_AUTH_SUCCESS) {
 
-        bool ok;
-        QString text = QInputDialog::getText(nullptr, "Inter the password",
-                                             "Please enter the password:", QLineEdit::Normal,
-                                             QDir::home().dirName(), &ok);
-
-        if (ok && !text.isEmpty()) {
-            password = text.toUtf8().constData();
-
-            rc = ssh_userauth_password(ssh, nullptr, password.c_str());
-            if (rc != SSH_AUTH_SUCCESS) {
-                SERVER_ERROR(2, "Error authenticating with password: ", ssh_get_error(ssh));
-                return false;
-            }
-        } else
+        rc = ssh_userauth_password(ssh, username.toUtf8().constData(), password.toUtf8().constData());
+        if (rc != SSH_AUTH_SUCCESS) {
+            SERVER_ERROR(2, "Error authenticating with password: ", ssh_get_error(ssh));
             return false;
+        }
     }
+
     connected = true;
+    SERVER_ERROR(1, "authenticating passed");
     return true;
 }
 
