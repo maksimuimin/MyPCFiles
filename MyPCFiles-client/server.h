@@ -3,13 +3,16 @@
 
 #include <libssh/libssh.h>
 #include <libssh/sftp.h>
+
 #include <string>
 #include <cstdarg>
+#include <memory>
+#include <iostream>
+
 #include <QString>
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QDir>
-#include <memory>
 #include <QErrorMessage>
 
 using std::string;

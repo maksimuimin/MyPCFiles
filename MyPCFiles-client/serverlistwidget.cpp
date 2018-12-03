@@ -5,8 +5,7 @@ ServerListWidget::ServerListWidget(QWidget* parent) : QListWidget (parent){
        //this->add(unique_ptr<Server>(s));
     //});
     this->add_new(unique_ptr<Server>(new Server()));
-    this->add_new(unique_ptr<Server>(new Server()));
-    this->add_new(unique_ptr<Server>(new Server()));
+    this->add_new(unique_ptr<Server>(new Server("demo", "password", "test.rebex.net", 22, "Test.rebex.net")));
 }
 
 void ServerListWidget::add_new(unique_ptr<Server> server){
