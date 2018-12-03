@@ -6,4 +6,7 @@
         <file alias="delete.png">res/img/delete.png</file>
         <file alias="connect.png">res/img/connect.png</file>
     </qresource>
+    <qresource prefix="/log">
+        <file alias="default.log">log/default.log</file>
+    </qresource>
 </RCC>

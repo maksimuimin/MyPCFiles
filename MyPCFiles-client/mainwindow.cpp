@@ -40,6 +40,7 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::addServerBtnOnClick(){
+    BOOST_LOG_TRIVIAL(info) << "Command creat dialog";
     ServerInputDialog dialog;
     dialog.exec();
     if(dialog.result() == dialog.Accepted){
@@ -50,7 +51,10 @@ void MainWindow::addServerBtnOnClick(){
                                               dialog.serverName->text()));
         serverList->add_new(std::move(server));
         BOOST_LOG_TRIVIAL(info) << "Added new server: " << dialog.hostName;
+        BOOST_LOG_TRIVIAL(info) << "Save data: USERNAME: " << dialog.userName << "HOSTNAME: " << dialog.hostName << "PORT: " << dialog.port
+                                << "SERVERNAME" << dialog.serverName;
     }
+    BOOST_LOG_TRIVIAL(info) << "Created";
 }
 
 MainWindow::ServerInputDialog::ServerInputDialog(QWidget* parent) : QDialog(parent) {
