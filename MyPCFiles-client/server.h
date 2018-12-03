@@ -8,6 +8,7 @@
 #include <cstdarg>
 #include <memory>
 #include <iostream>
+#include <errno.h>
 
 #include <QString>
 #include <QMessageBox>

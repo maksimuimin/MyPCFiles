@@ -62,3 +62,10 @@ DISTFILES +=
 
 RESOURCES += \
     res.qrc
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/libssh/0.8.4/lib/release/ -lssh.4.7.1
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/libssh/0.8.4/lib/debug/ -lssh.4.7.1
+else:unix: LIBS += -L$$PWD/../../../../../usr/local/Cellar/libssh/0.8.4/lib/ -lssh.4.7.1
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/Cellar/libssh/0.8.4/include
+DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/libssh/0.8.4/include
