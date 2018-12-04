@@ -1,6 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#define BOOST_LOG_DYN_LINK 1
+
+#include <boost/log/trivial.hpp>
+
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>

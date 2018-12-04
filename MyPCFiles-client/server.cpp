@@ -10,32 +10,36 @@ void Server::connect(){
 
     if (ssh == nullptr)
         return;
-
     int rc;
 
-    ssh_options_set(ssh, SSH_OPTIONS_HOST, &host);
+    ssh_options_set(ssh, SSH_OPTIONS_HOST, host.toUtf8().constData());
     rc = ssh_connect(ssh);
 
     if (rc != SSH_OK) {
-        SERVER_ERROR(2, "Error connecting to ", ssh_get_error(ssh));
+        BOOST_LOG_TRIVIAL(fatal) << "Error connecting to" << ssh_get_error(ssh);
+        SERVER_ERROR(3, "Error connecting to ", ssh_get_error(ssh));
         return;
     }
 
+    if (!auth())
+        return;
+
     sftp = sftp_new(ssh);
-    if (sftp == nullptr) {;
+    if (sftp == nullptr) {
+        BOOST_LOG_TRIVIAL(fatal) << "Error allocating SFTP session: " << ssh_get_error(ssh);
         SERVER_ERROR(2, "Error allocating SFTP session: ", ssh_get_error(ssh));
         return;
     }
 
     rc = sftp_init(sftp);
     if (rc != SSH_OK) {
-
+        BOOST_LOG_TRIVIAL(fatal) << "Error allocating SFTP session: " << ssh_get_error(sftp);
         SERVER_ERROR(2, "Error allocating SFTP session: ", ssh_get_error(sftp));
         sftp_free(sftp);
         return;
     }
-
-    auth();
+    BOOST_LOG_TRIVIAL(info) << "Connected to serve: " << host.toUtf8().constData();
+    SERVER_ERROR(1, "Connected to server");
 }
 
 void Server::disconnect(){
@@ -45,6 +49,7 @@ void Server::disconnect(){
     //В зависимости от ответа, необходимо либо отменить закрытие подключения, либо
     //прервать загрузку файлов и отключиться от сервера
     // Этот метод пока не до конца реализовано!!!
+    BOOST_LOG_TRIVIAL(info) << "Disconnect to serve: " << host.toUtf8().constData();
     ssh_key_free(publicKey);
     ssh_disconnect(ssh);
     ssh_free(ssh);
@@ -77,6 +82,7 @@ bool Server::verifyServer(){
             break;
 
         case SSH_KNOWN_HOSTS_CHANGED:
+            BOOST_LOG_TRIVIAL(error) << "Host key for server changed. For security reasons, connection will be stopped";
             SERVER_ERROR("Host key for server changed. For security reasons, connection will be stopped");
             ssh_clean_pubkey_hash(&hash);
             return false;
@@ -85,11 +91,13 @@ bool Server::verifyServer(){
         // An attacker might change the default server key to
         // confuse your client into thinking the key does not exist
         case SSH_KNOWN_HOSTS_OTHER:
+            BOOST_LOG_TRIVIAL(error) << "The host key for this server was not found!!!";
             SERVER_ERROR("The host key for this server was not found!!!");
             ssh_clean_pubkey_hash(&hash);
             return false;
 
         case SSH_KNOWN_HOSTS_NOT_FOUND:
+            BOOST_LOG_TRIVIAL(error) << "The host key for this server was not found!!!";
             SERVER_ERROR("Could not find known host file!");
             return false;
 
@@ -110,6 +118,7 @@ bool Server::verifyServer(){
               case QMessageBox::Yes:
                     rc = ssh_session_update_known_hosts(ssh);
                     if (rc < 0) {
+                        BOOST_LOG_TRIVIAL(fatal) << "Error: " << strerror(errno);
                         SERVER_ERROR(2, "Error: ", strerror(errno));
                         return false;
                     }
@@ -122,6 +131,7 @@ bool Server::verifyServer(){
         }
 
         case SSH_KNOWN_HOSTS_ERROR:
+            BOOST_LOG_TRIVIAL(error) << "Error: " << ssh_get_error(ssh);
             SERVER_ERROR(2, "Error: ", ssh_get_error(ssh));
             ssh_clean_pubkey_hash(&hash);
             return false;
@@ -140,31 +150,24 @@ bool Server::auth(){
     //паролю, их нужно запросить у пользователя с помощью диалога
 
     int rc;
-    string password;
 
     if (!verifyServer())
         return false;
 
-    rc = ssh_userauth_publickey_auto(ssh, nullptr, nullptr);
-    if (rc == SSH_AUTH_ERROR) {
+    rc = ssh_userauth_publickey_auto(ssh, nullptr, "");
+    if (rc != SSH_AUTH_SUCCESS) {
 
-        bool ok;
-        QString text = QInputDialog::getText(nullptr, "Inter the password",
-                                             "Please enter the password:", QLineEdit::Normal,
-                                             QDir::home().dirName(), &ok);
-
-        if (ok && !text.isEmpty()) {
-            password = text.toUtf8().constData();
-
-            rc = ssh_userauth_password(ssh, nullptr, password.c_str());
-            if (rc != SSH_AUTH_SUCCESS) {
-                SERVER_ERROR(2, "Error authenticating with password: ", ssh_get_error(ssh));
-                return false;
-            }
-        } else
+        rc = ssh_userauth_password(ssh, username.toUtf8().constData(), password.toUtf8().constData());
+        if (rc != SSH_AUTH_SUCCESS) {
+            BOOST_LOG_TRIVIAL(error) << "Error authenticating with password: " << ssh_get_error(ssh);
+            SERVER_ERROR(2, "Error authenticating with password: ", ssh_get_error(ssh));
             return false;
+        }
     }
+
     connected = true;
+    BOOST_LOG_TRIVIAL(info) << "Authenticating passed";
+    SERVER_ERROR(1, "authenticating passed");
     return true;
 }
 
@@ -175,6 +178,7 @@ bool Server::generateKeys(){
     if (rc < 0)
         return false;
 
+    BOOST_LOG_TRIVIAL(info) << "Generated Key";
     return true;
 }
 

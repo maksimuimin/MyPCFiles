@@ -1,6 +1,11 @@
 #ifndef NAVBARWIDGET_H
 #define NAVBARWIDGET_H
 
+
+#define BOOST_LOG_DYN_LINK 1
+
+#include <boost/log/trivial.hpp>
+
 #include <QPushButton>
 #include <QLabel>
 #include <QMenuBar>
