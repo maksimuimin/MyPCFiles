@@ -1,4 +1,4 @@
-#include <server.h>
+#include "server.h"
 
 void Server::connect(){
     //Необходимо создать ssh и затем sftp подключение
@@ -38,8 +38,8 @@ void Server::connect(){
         sftp_free(sftp);
         return;
     }
-    BOOST_LOG_TRIVIAL(info) << "Connected to serve: " << host.toUtf8().constData();
-    SERVER_ERROR(1, "Connected to server");
+    BOOST_LOG_TRIVIAL(info) << "Connected to server: " << host.toUtf8().constData();
+//    SERVER_ERROR(1, "Connected to server");
 }
 
 void Server::disconnect(){
@@ -49,7 +49,7 @@ void Server::disconnect(){
     //В зависимости от ответа, необходимо либо отменить закрытие подключения, либо
     //прервать загрузку файлов и отключиться от сервера
     // Этот метод пока не до конца реализовано!!!
-    BOOST_LOG_TRIVIAL(info) << "Disconnect to serve: " << host.toUtf8().constData();
+    BOOST_LOG_TRIVIAL(info) << "Disconnect from server: " << host.toUtf8().constData();
     ssh_key_free(publicKey);
     ssh_disconnect(ssh);
     ssh_free(ssh);
@@ -75,67 +75,67 @@ bool Server::verifyServer(){
     if (rc < 0)
         return false;
 
-    state = ssh_session_is_known_server(ssh);
-    switch (state) {
-        case SSH_KNOWN_HOSTS_OK:
-            /* OK */
-            break;
+//    state = ssh_session_is_known_server(ssh);
+//    switch (state) {
+//        case SSH_KNOWN_HOSTS_OK:
+//            /* OK */
+//            break;
 
-        case SSH_KNOWN_HOSTS_CHANGED:
-            BOOST_LOG_TRIVIAL(error) << "Host key for server changed. For security reasons, connection will be stopped";
-            SERVER_ERROR("Host key for server changed. For security reasons, connection will be stopped");
-            ssh_clean_pubkey_hash(&hash);
-            return false;
+//        case SSH_KNOWN_HOSTS_CHANGED:
+//            BOOST_LOG_TRIVIAL(error) << "Host key for server changed. For security reasons, connection will be stopped";
+//            SERVER_ERROR("Host key for server changed. For security reasons, connection will be stopped");
+//            ssh_clean_pubkey_hash(&hash);
+//            return false;
 
-        // The host key for this server was not found but an othe type of key exists;
-        // An attacker might change the default server key to
-        // confuse your client into thinking the key does not exist
-        case SSH_KNOWN_HOSTS_OTHER:
-            BOOST_LOG_TRIVIAL(error) << "The host key for this server was not found!!!";
-            SERVER_ERROR("The host key for this server was not found!!!");
-            ssh_clean_pubkey_hash(&hash);
-            return false;
+//        // The host key for this server was not found but an othe type of key exists;
+//        // An attacker might change the default server key to
+//        // confuse your client into thinking the key does not exist
+//        case SSH_KNOWN_HOSTS_OTHER:
+//            BOOST_LOG_TRIVIAL(error) << "The host key for this server was not found!!!";
+//            SERVER_ERROR("The host key for this server was not found!!!");
+//            ssh_clean_pubkey_hash(&hash);
+//            return false;
 
-        case SSH_KNOWN_HOSTS_NOT_FOUND:
-            BOOST_LOG_TRIVIAL(error) << "The host key for this server was not found!!!";
-            SERVER_ERROR("Could not find known host file!");
-            return false;
+//        case SSH_KNOWN_HOSTS_NOT_FOUND:
+//            BOOST_LOG_TRIVIAL(error) << "The host key for this server was not found!!!";
+//            SERVER_ERROR("Could not find known host file!");
+//            return false;
 
-        case SSH_KNOWN_HOSTS_UNKNOWN: {
-            hexa = ssh_get_hexa(hash, hlen);
-            ssh_clean_pubkey_hash(&hash);
+//        case SSH_KNOWN_HOSTS_UNKNOWN: {
+//            hexa = ssh_get_hexa(hash, hlen);
+//            ssh_clean_pubkey_hash(&hash);
 
-            QMessageBox msgBox;
+//            QMessageBox msgBox;
 
-            msgBox.setText("The server is unknown. Do you trust the host key?");
-            msgBox.setDetailedText(QString::fromStdString(string("Public key hash: ") + hexa));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::No);
+//            msgBox.setText("The server is unknown. Do you trust the host key?");
+//            msgBox.setDetailedText(QString::fromStdString(string("Public key hash: ") + hexa));
+//            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+//            msgBox.setDefaultButton(QMessageBox::No);
 
-            int ret = msgBox.exec();
+//            int ret = msgBox.exec();
 
-            switch (ret) {
-              case QMessageBox::Yes:
-                    rc = ssh_session_update_known_hosts(ssh);
-                    if (rc < 0) {
-                        BOOST_LOG_TRIVIAL(fatal) << "Error: " << strerror(errno);
-                        SERVER_ERROR(2, "Error: ", strerror(errno));
-                        return false;
-                    }
-                  break;
-              case QMessageBox::No:
-                  return false;
-            }
+//            switch (ret) {
+//              case QMessageBox::Yes:
+//                    rc = ssh_session_update_known_hosts(ssh);
+//                    if (rc < 0) {
+//                        BOOST_LOG_TRIVIAL(fatal) << "Error: " << strerror(errno);
+//                        SERVER_ERROR(2, "Error: ", strerror(errno));
+//                        return false;
+//                    }
+//                  break;
+//              case QMessageBox::No:
+//                  return false;
+//            }
 
-            break;
-        }
+//            break;
+//        }
 
-        case SSH_KNOWN_HOSTS_ERROR:
-            BOOST_LOG_TRIVIAL(error) << "Error: " << ssh_get_error(ssh);
-            SERVER_ERROR(2, "Error: ", ssh_get_error(ssh));
-            ssh_clean_pubkey_hash(&hash);
-            return false;
-    }
+//        case SSH_KNOWN_HOSTS_ERROR:
+//            BOOST_LOG_TRIVIAL(error) << "Error: " << ssh_get_error(ssh);
+//            SERVER_ERROR(2, "Error: ", ssh_get_error(ssh));
+//            ssh_clean_pubkey_hash(&hash);
+//            return false;
+//    }
 
     ssh_clean_pubkey_hash(&hash);
 
@@ -167,7 +167,6 @@ bool Server::auth(){
 
     connected = true;
     BOOST_LOG_TRIVIAL(info) << "Authenticating passed";
-    SERVER_ERROR(1, "authenticating passed");
     return true;
 }
 
@@ -178,7 +177,7 @@ bool Server::generateKeys(){
     if (rc < 0)
         return false;
 
-    BOOST_LOG_TRIVIAL(info) << "Generated Key";
+    BOOST_LOG_TRIVIAL(info) << "Keys generated";
     return true;
 }
 

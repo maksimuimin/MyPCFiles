@@ -5,8 +5,8 @@
 #ifndef MYPCFILES_FILESLISTWIDGET_H
 #define MYPCFILES_FILESLISTWIDGET_H
 
-#include <QListWidget>
-#include <QWidget>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QWidget>
 #include <libssh/sftp.h>
 
 class FileListWidget: public QListWidget {

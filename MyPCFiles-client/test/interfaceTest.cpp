@@ -1,42 +1,28 @@
 //#include "../MyPCFiles-client/mainwindow.h"
-//#include "../MyPCFiles-client/server.h"
 //#include "../MyPCFiles-client/filelistwidget.h";
-//#include "../MyPCFiles-client/sftpinterfacewidget.h";
 //#include "../MyPCFiles-client/serverlistwidget.h";
-#include <QtTest/QtTest>
+#include "../server.h"
+#include "../sftpinterface.h"
+#include <QtTest>
 
-
-//TEST_CASE("Server class") {
-
-//    // if there is no such kind of class test will fail
-//    Server server("username", "host", 8080);
-//    // if there is no connect method function will fail
-//    server.connect();
-//    // if there is no disconnect method function will fail
-//    server.disconnect();
-//    // if there is no destructor test will fail
-//    server.~Server();
-//}
-
-//class ServerClassTest: public QObject {
-//    Q_OBJECT
-
-//private slots:
-//    void
-
-//};
-
-class TestQString: public QObject
+class Test: public QObject
 {
     Q_OBJECT
 private slots:
-    void toUpper() {
-        QString str = "Hello";
-        QCOMPARE(str.toUpper(), QString("HELLO"));
+
+    void ServerTest() {
+        class Server server("demo", "password", "test.rebex.net", 22, "Test.rebex.net");
+
+        SFTPInterface sftpinterface(&server);
+        sftpinterface.open_connection();
+        sftpinterface.changeDir("/");
+        sftpinterface.download("readme.txt");
+        sftpinterface.close_connection();
     }
+
 };
 
-QTEST_MAIN(TestQString)
+QTEST_MAIN(Test)
 #include "interfaceTest.moc"
 
 

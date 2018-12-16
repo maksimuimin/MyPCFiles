@@ -14,10 +14,10 @@
 #include <errno.h>
 
 #include <QString>
-#include <QMessageBox>
-#include <QInputDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QInputDialog>
 #include <QDir>
-#include <QErrorMessage>
+#include <QtWidgets/QErrorMessage>
 
 using std::string;
 

@@ -2,10 +2,10 @@
 #define SERVERLISTWIDGET_H
 
 #include <QString>
-#include <QListWidget>
-#include <QLabel>
-#include <QPushButton>
-#include <QHBoxLayout>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QHBoxLayout>
 #include "serverlist.h"
 #include <algorithm>
 #include <memory>
