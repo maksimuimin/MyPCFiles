@@ -7,6 +7,9 @@
 
 #include <QListWidget>
 #include <QWidget>
+#include <QLabel>
+#include <QPushButton>
+#include <QHBoxLayout>
 #include <libssh/sftp.h>
 
 class FileListWidget: public QListWidget {
@@ -16,7 +19,7 @@ public:
     FileListWidget(QWidget* parent = nullptr);
     ~FileListWidget();
 
-    void add(sftp_attributes attrs);
+    void add(QString str, bool is_dir = false);
 };
 
 #endif //MYPCFILES_FILESLISTWIDGET_H

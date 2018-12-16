@@ -8,15 +8,16 @@
 #include <fcntl.h>
 
 using std::string;
+using std::shared_ptr;
 
 class SFTPInterface {
 private:
-    Server* server;
+    shared_ptr<Server> server;
     QList<sftp_attributes> files;
     string nameDir;
 
 public:
-    SFTPInterface(Server* _server = nullptr): server(_server) {}//TODO заменить указатель на умный из stl
+    SFTPInterface(shared_ptr<Server> _server = nullptr): server(std::move(_server)) {}//TODO заменить указатель на умный из stl
     SFTPInterface(const SFTPInterface&) = delete;
     SFTPInterface(SFTPInterface&&) = delete;
     ~SFTPInterface();

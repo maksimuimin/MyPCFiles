@@ -40,6 +40,7 @@ void Server::connect(){
     }
     BOOST_LOG_TRIVIAL(info) << "Connected to serve: " << host.toUtf8().constData();
     SERVER_ERROR(1, "Connected to server");
+
 }
 
 void Server::disconnect(){

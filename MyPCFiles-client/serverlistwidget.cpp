@@ -48,13 +48,10 @@ void ServerListWidget::serverConnectButtonOnClick(){
         BOOST_LOG_TRIVIAL(error) << "Critical error: can't find Server data in this widget";
         Server::SERVER_ERROR("Critical error: can't find Server data in this widget");
     }
-    if(server){
-        if(server->is_connected()){
-            server->disconnect();
-        }
-        else {
-            server->connect();
-        }
-    }
     BOOST_LOG_TRIVIAL(info) << "Server connected button on click";
+    server->connect();
+    SFTPInterfaceWidget new_server_widget(nullptr, std::move(server));
+    new_server_widget.setModal(true);
+    new_server_widget.exec();
+
 }

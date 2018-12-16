@@ -3,24 +3,21 @@
 //
 #include "sftpinterfacewidget.h"
 
-SFTPInterfaceWidget::SFTPInterfaceWidget(QWidget* parent, SFTPInterface* _interface) {
+SFTPInterfaceWidget::SFTPInterfaceWidget(QWidget* parent, shared_ptr<Server> server) : QDialog(parent),
+                                                                                        interface(std::move(server)){
     // TODO default constructor
     //Необходимо построить интерфейс взаимодействия пользователя с удалённой файловой системой
     //Необходимые функции:
     //1)Смена директории
     //2)Скачать файл с сервера
     //3)Загрузить файл на сервер
-    //Эти функции реализуются слотами, сигналы для которых идут из FileListWidget
-}
-
-void SFTPInterfaceWidget::open_connection() {
-    // TODO open directory
-    // Необходимо вызвать функцию open_connection() класса SFTPInterface
-}
-
-void SFTPInterfaceWidget::close_connection() {
-    // TODO close directory
-    // Необходимо вызвать функцию close_connection() класса SFTPInterface
+    //Эти функции реализуются слотами, сигналы для которых идут из FileListWidgetш
+    mainLayout = new QVBoxLayout(this);
+    filesList = new FileListWidget(this);
+    uploadBtn = new QPushButton(QIcon(":img/upload.png"),"",this);
+    mainLayout->addWidget(filesList);
+    mainLayout->addWidget(uploadBtn);
+    connect(uploadBtn,SIGNAL(clicked),this,SLOT(upload()));
 }
 
 void SFTPInterfaceWidget::changeDir() {
@@ -41,5 +38,8 @@ void SFTPInterfaceWidget::download() {
 SFTPInterfaceWidget::~SFTPInterfaceWidget() {
     // TODO destructor
     //Необходимо освободить динамическую память
+    delete filesList;
+    delete uploadBtn;
+    delete mainLayout;
 }
 
