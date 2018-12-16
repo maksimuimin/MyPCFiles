@@ -1,13 +1,17 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#define BOOST_LOG_DYN_LINK 1
+
 #include <libssh/libssh.h>
 #include <libssh/sftp.h>
+#include <boost/log/trivial.hpp>
 
 #include <string>
 #include <cstdarg>
 #include <memory>
 #include <iostream>
+#include <errno.h>
 
 #include <QString>
 #include <QMessageBox>

@@ -16,6 +16,7 @@ void ServerListWidget::add_new(unique_ptr<Server> server){
 }
 
 void ServerListWidget::add(const shared_ptr<Server> server) {
+    BOOST_LOG_TRIVIAL(info) << "Add";
     QListWidgetItem* item = new QListWidgetItem(this);
     QWidget* widget = new QWidget;
 
@@ -35,7 +36,7 @@ void ServerListWidget::add(const shared_ptr<Server> server) {
             this, SLOT(serverConnectButtonOnClick()));
 
     item->setSizeHint(widget->sizeHint());
-    this->setItemWidget(item, widget);
+    this->setItemWidget(item, widget); 
 }
 
 void ServerListWidget::serverConnectButtonOnClick(){
@@ -44,6 +45,7 @@ void ServerListWidget::serverConnectButtonOnClick(){
         //server = shared_ptr<Server>(sh(((QWidget*)sender()->parent())->property("server").data()));
         server = shared_ptr<Server>(*((Server**)(((QWidget*)(sender()->parent()))->property("server").data())));
     } catch (...) {
+        BOOST_LOG_TRIVIAL(error) << "Critical error: can't find Server data in this widget";
         Server::SERVER_ERROR("Critical error: can't find Server data in this widget");
     }
     if(server){
@@ -54,4 +56,5 @@ void ServerListWidget::serverConnectButtonOnClick(){
             server->connect();
         }
     }
+    BOOST_LOG_TRIVIAL(info) << "Server connected button on click";
 }

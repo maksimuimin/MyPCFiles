@@ -14,8 +14,10 @@ NavbarWidget::NavbarWidget(QWidget* parent): QMenuBar(parent){
 void NavbarWidget::settings_menu_on_click(){
     //TODO сделать диалог с настройками приложения
     QMessageBox message(this);
+    BOOST_LOG_TRIVIAL(info) << "Settings menu navbar opened";
     message.setModal(true);
     message.setWindowTitle("Application settings");
     message.setText("Some global settings stuff here");
     message.exec();
+
 }
