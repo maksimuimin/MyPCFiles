@@ -8,7 +8,7 @@
 #include <boost/log/trivial.hpp>
 
 #include <string>
-#include <cstdarg>
+//#include <cstdarg>
 #include <memory>
 #include <iostream>
 #include <errno.h>

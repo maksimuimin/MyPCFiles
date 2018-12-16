@@ -1,4 +1,4 @@
-#include <server.h>
+#include "server.h"
 
 void Server::connect(){
     //Необходимо создать ssh и затем sftp подключение
