@@ -34,16 +34,16 @@ void SFTPInterface::changeDir(string path){
         return;
     }
 
+    while ((attributes = sftp_readdir(server->getSftp(), dir)) != nullptr) {
+        BOOST_LOG_TRIVIAL(info) << "Directory name = " << attributes->name;
+        files.push_back(attributes);
+    }
+
     if (!sftp_dir_eof(dir)) {
         BOOST_LOG_TRIVIAL(error) << "Can't list directory: " << ssh_get_error(server->getSsh());
-        Server::SERVER_ERROR(2, "Can't list directory: ",
-                                     ssh_get_error(server->getSsh()));
         sftp_closedir(dir);
         return;
     }
-
-    while ((attributes = sftp_readdir(server->getSftp(), dir)) != NULL)
-        files.push_back(attributes);
 
     rc = sftp_closedir(dir);
     if (rc != SSH_OK) {
@@ -55,92 +55,83 @@ void SFTPInterface::changeDir(string path){
     BOOST_LOG_TRIVIAL(info) << "Changed";
 }
 
-void SFTPInterface::upload(string serverDir, string fileName){
+void SFTPInterface::upload(string fileName){
     //Необходимо загрузить файл на сервер
-    BOOST_LOG_TRIVIAL(info) << "Command upload file: " << fileName << "from dir: " << serverDir;
-    int access_type;
+    BOOST_LOG_TRIVIAL(info) << "Command upload file: " << fileName;
+
     sftp_file file;
     char buffer[MAX_XFER_BUF_SIZE];
     int nbytes, nwritten, rc;
     int fd;
 
-    string PCDir = nameDir + "/" + fileName;
-    access_type = O_RDONLY;
 
-    file = sftp_open(server->getSftp(), PCDir.c_str(), access_type, 0);
-
-    if (file == nullptr) {
-        BOOST_LOG_TRIVIAL(error) << "Can't open file for reading: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-        Server::SERVER_ERROR(3, "Can't open file for reading: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+    fd = open(fileName.c_str(), O_RDONLY, 0);
+    if (fd < 0) {
+        BOOST_LOG_TRIVIAL(error) << "Can't open file for reading: " << fileName.c_str() << strerror(errno);
         return;
     }
 
-    serverDir = serverDir + "/" + fileName;
-
-    fd = open(serverDir.c_str(), O_CREAT);
-    if (fd < 0) {
-        BOOST_LOG_TRIVIAL(error) << "Can't open file for writing: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-        Server::SERVER_ERROR(3, "Can't open file for writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+    file = sftp_open(server->getSftp(), fileName.c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
+    if (file == nullptr) {
+        BOOST_LOG_TRIVIAL(error) << "Can't open file for writing: " << fileName.c_str() << " " <<  ssh_get_error(server->getSsh());
         return;
     }
 
     for (;;) {
 
-        nbytes = sftp_read(file, buffer, sizeof(buffer));
+        nbytes = read(fd, buffer, sizeof(buffer));
 
         if (nbytes == 0) {
             break; // EOF
         } else if (nbytes < 0) {
-            BOOST_LOG_TRIVIAL(error) << "Error while reading file: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-            Server::SERVER_ERROR(3, "Error while reading file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
-            sftp_close(file);
+            BOOST_LOG_TRIVIAL(error) << "Error while reading file: " << fileName.c_str() << strerror(errno);
+            close(fd);
             return;
         }
 
-        nwritten = write(fd, buffer, nbytes);
+        nwritten = sftp_write(file, buffer, nbytes);
         if (nwritten != nbytes) {
-            BOOST_LOG_TRIVIAL(error) << "Error writing: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-            Server::SERVER_ERROR(3, "Error writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
-            sftp_close(file);
+            BOOST_LOG_TRIVIAL(error) << "Error writing: " << fileName.c_str() << " " << ssh_get_error(server->getSsh());
+            close(fd);
             return;
         }
     }
 
     rc = sftp_close(file);
     if (rc != SSH_OK) {
-        BOOST_LOG_TRIVIAL(error) << "Can't close the read file: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-        Server::SERVER_ERROR(3, "Can't close the read file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+        BOOST_LOG_TRIVIAL(error) << "Can't close the read file: " << fileName.c_str() << ssh_get_error(server->getSsh());
         return;
     }
-    BOOST_LOG_TRIVIAL(info) << "Uploaded" << serverDir.c_str();
+
+    close(fd);
+
+    BOOST_LOG_TRIVIAL(info) << "Uploaded " << fileName.c_str();
 }
 
 void SFTPInterface::download(string fileName){
     //Необходимо скачать файл с сервера
     BOOST_LOG_TRIVIAL(info) << "Command download file: " << fileName;
-    int access_type;
+
     sftp_file file;
     char buffer[MAX_XFER_BUF_SIZE];
     int nbytes, nwritten, rc;
     int fd;
-    string serverDir = nameDir + "/" + fileName;
-    access_type = O_RDONLY;
      
      
-    file = sftp_open(server->getSftp(), serverDir.c_str(), access_type, 0);
+    file = sftp_open(server->getSftp(), fileName.c_str(), O_RDONLY, 0);
 
-    if (file == NULL) {
-        BOOST_LOG_TRIVIAL(error) << "Can't open file for reading: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-        Server::SERVER_ERROR(3, "Can't open file for reading: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+    if (file == nullptr) {
+        BOOST_LOG_TRIVIAL(error) << "Can't open file for reading: " << fileName.c_str() << ssh_get_error(server->getSsh());
         return;
     }
      
-    string PCDir = "~/Downloads/" + fileName;
 
-    fd = open(PCDir.c_str(), O_CREAT);
+    string PCDir = "../downloads/" + fileName;
+
+    fd = open(fileName.c_str(),  O_WRONLY | O_CREAT, S_IWRITE | S_IREAD);
+
     if (fd < 0) {
-        BOOST_LOG_TRIVIAL(error) << "Can't open file for writing: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-        Server::SERVER_ERROR(3, "Can't open file for writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+        BOOST_LOG_TRIVIAL(error) << "Can't open file for writing: " << fileName.c_str() << " " << strerror(errno);
         return;
     }
 
@@ -150,15 +141,13 @@ void SFTPInterface::download(string fileName){
         if (nbytes == 0) {
             break; // EOF
         } else if (nbytes < 0) {
-            BOOST_LOG_TRIVIAL(error) << "Error while reading file: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-            Server::SERVER_ERROR(3, "Error while reading file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+            BOOST_LOG_TRIVIAL(error) << "Error while reading file: " << fileName.c_str() << strerror(errno);
             sftp_close(file);
         }
 
         nwritten = write(fd, buffer, nbytes);
         if (nwritten != nbytes) {
-            BOOST_LOG_TRIVIAL(error) << "Error writing: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-            Server::SERVER_ERROR(3, "Error writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+            BOOST_LOG_TRIVIAL(error) << "Error writing: " << fileName.c_str() << strerror(errno);
             sftp_close(file);
             return;
         }
@@ -166,9 +155,11 @@ void SFTPInterface::download(string fileName){
 
     rc = sftp_close(file);
     if (rc != SSH_OK) {
-        BOOST_LOG_TRIVIAL(error) << "Can't close the read file: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-        Server::SERVER_ERROR(3, "Can't close the read file: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+        BOOST_LOG_TRIVIAL(error) << "Can't close the read file: " << fileName.c_str() << ssh_get_error(server->getSsh());
         return;
     }
-    BOOST_LOG_TRIVIAL(info) << "Downloaded in " << serverDir.c_str();
+
+    close(fd);
+
+    BOOST_LOG_TRIVIAL(info) << "Downloaded in " << fileName.c_str();
 }
