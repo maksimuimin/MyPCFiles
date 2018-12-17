@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <memory>
 #include <QVariant>
+#include "sftpinterfacewidget.h"
 
 using std::unique_ptr;
 using std::shared_ptr;

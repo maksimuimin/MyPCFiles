@@ -7,3 +7,5 @@ tests.cpp
 build-MyPCFiles-client-Desktop-Debug/
 build-MyPCFiles-client-Desktop_Qt_5_12_0_GCC_64bit-Debug/
 build-MyPCFiles-client-Desktop_Qt_5_12_0_clang_64bit-Debug/
+
+MyPCFiles-client/MyPCFiles-client.pro

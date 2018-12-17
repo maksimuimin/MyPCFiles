@@ -5,6 +5,11 @@
         <file alias="disconnect.png">res/img/disconnect.png</file>
         <file alias="delete.png">res/img/delete.png</file>
         <file alias="connect.png">res/img/connect.png</file>
+        <file alias="open.png">res/img/open.png</file>
+        <file alias="upload.png">res/img/upload.png</file>
+        <file alias="download.png">res/img/download.png</file>
+        <file alias="file.png">res/img/file.png</file>
+        <file alias="folder.png">res/img/folder.png</file>
     </qresource>
     <qresource prefix="/log">
         <file alias="default.log">log/default.log</file>

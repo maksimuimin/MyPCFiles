@@ -5,6 +5,7 @@
 SFTPInterface::~SFTPInterface() {
     //Необходимо освободить всю динамическую память
     files.clear();
+    close_connection();
 }
 
 void SFTPInterface::open_connection(){
