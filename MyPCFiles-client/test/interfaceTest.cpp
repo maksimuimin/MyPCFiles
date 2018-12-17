@@ -15,8 +15,13 @@ private slots:
 
         SFTPInterface sftpinterface(&server);
         sftpinterface.open_connection();
+
         sftpinterface.changeDir("/");
         sftpinterface.download("readme.txt");
+
+        sftpinterface.changeDir("pub");
+        sftpinterface.upload("readme.txt");
+
         sftpinterface.close_connection();
     }
 
