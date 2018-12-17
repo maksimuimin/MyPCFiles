@@ -1,29 +1,40 @@
 #include "mainwindow.h"
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include <QPalette>
 
-//#include <boost/log/core.hpp>
-//#include <boost/log/trivial.hpp>
-//#include <boost/log/expressions.hpp>
-//#include <boost/log/utility/setup/file.hpp>
+#include <boost/log/core.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/log/expressions.hpp>
+#include <boost/log/sinks/text_file_backend.hpp>
+#include <boost/log/utility/setup/file.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
+#include <boost/log/sources/severity_logger.hpp>
+#include <boost/log/sources/record_ostream.hpp>
 
-//namespace logging = boost::log;
+namespace logging = boost::log;
+namespace keywords = boost::log::keywords;
 
-//void init()
-//{
-//    logging::add_file_log(QFile(":/log/default.log").fileName().toStdString());
-//    logging::add_file_log("~/dz_3/MyPCFiles/MyPCFiles-client/log/default.log");
+void init() {
 
-//    logging::core::get()->set_filter
-//    (
-//        logging::trivial::severity >= logging::trivial::info
-//    );
-//}
+    static const std::string COMMON_FMT("[%TimeStamp%][%Severity%]:  %Message%");
+    logging::register_simple_formatter_factory< logging::trivial::severity_level, char >("Severity");
+
+    logging::add_file_log(
+                keywords::file_name = "../log/default.log",
+                keywords::format = COMMON_FMT,
+                keywords::auto_flush = true
+    );
+
+   logging::core::get()->set_filter (
+        logging::trivial::severity >= logging::trivial::info
+   );
+}
 
 
 int main(int argc, char *argv[]){
 
-//    init();
+    init();
+    logging::add_common_attributes();
 
     BOOST_LOG_TRIVIAL(info) << "PROGRAMM STARTED";
 
@@ -42,6 +53,5 @@ int main(int argc, char *argv[]){
     w.show();
     //Вобщем случае, здесь писать ничего не надо
     //Возможно, сюда будут вынесены связи сигналов-слотов, но это обсуждается отдельно
-    BOOST_LOG_TRIVIAL(info) << "PROGRAMM TERMINATED";
     return a.exec();
 }

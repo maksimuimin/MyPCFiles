@@ -1,4 +1,4 @@
-#include <server.h>
+#include "server.h"
 
 void Server::connect(){
     //Необходимо создать ssh и затем sftp подключение
@@ -38,8 +38,8 @@ void Server::connect(){
         sftp_free(sftp);
         return;
     }
-    BOOST_LOG_TRIVIAL(info) << "Connected to serve: " << host.toUtf8().constData();
-    SERVER_ERROR(1, "Connected to server");
+    BOOST_LOG_TRIVIAL(info) << "Connected to server: " << host.toUtf8().constData();
+//    SERVER_ERROR(1, "Connected to server");
 }
 
 void Server::disconnect(){
@@ -49,11 +49,18 @@ void Server::disconnect(){
     //В зависимости от ответа, необходимо либо отменить закрытие подключения, либо
     //прервать загрузку файлов и отключиться от сервера
     // Этот метод пока не до конца реализовано!!!
-    BOOST_LOG_TRIVIAL(info) << "Disconnect to serve: " << host.toUtf8().constData();
-    ssh_key_free(publicKey);
-    ssh_disconnect(ssh);
-    ssh_free(ssh);
-    sftp_free(sftp);
+    if (publicKey != nullptr)
+       ssh_key_free(publicKey);
+
+    if (sftp != nullptr)
+        sftp_free(sftp);
+
+    if (ssh != nullptr) {
+        ssh_disconnect(ssh);
+        ssh_free(ssh);
+    }
+
+    BOOST_LOG_TRIVIAL(info) << "Disconnect from server: " << host.toUtf8().constData();
     connected = false;
 }
 
@@ -167,7 +174,6 @@ bool Server::auth(){
 
     connected = true;
     BOOST_LOG_TRIVIAL(info) << "Authenticating passed";
-    SERVER_ERROR(1, "authenticating passed");
     return true;
 }
 
@@ -178,7 +184,7 @@ bool Server::generateKeys(){
     if (rc < 0)
         return false;
 
-    BOOST_LOG_TRIVIAL(info) << "Generated Key";
+    BOOST_LOG_TRIVIAL(info) << "Keys generated";
     return true;
 }
 

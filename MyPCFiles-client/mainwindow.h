@@ -5,12 +5,12 @@
 
 #include <boost/log/trivial.hpp>
 
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QDialog>
-#include <QLineEdit>
-#include <QFormLayout>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QFormLayout>
 #include <QIntValidator>
 #include <memory>
 #include "navbarwidget.h"

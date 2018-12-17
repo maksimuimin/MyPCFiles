@@ -6,10 +6,10 @@
 
 #include <boost/log/trivial.hpp>
 
-#include <QPushButton>
-#include <QLabel>
-#include <QMenuBar>
-#include <QMessageBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QMessageBox>
 
 class NavbarWidget: public QMenuBar {
     Q_OBJECT

@@ -5,7 +5,7 @@
 #ifndef MYPCFILES_SFTPINTERFACEWIDGET_H
 #define MYPCFILES_SFTPINTERFACEWIDGET_H
 
-#include <QWidget>
+#include <QtWidgets/QWidget>
 #include "filelistwidget.h"
 #include "sftpinterface.h"
 

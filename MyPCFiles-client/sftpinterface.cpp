@@ -34,16 +34,24 @@ void SFTPInterface::changeDir(string path){
         return;
     }
 
+    while ((attributes = sftp_readdir(server->getSftp(), dir)) != nullptr) {
+//        printf("%-20s %10llu %.8o %s(%d)\t%s(%d)\n",
+//             attributes->name,
+//             (long long unsigned int) attributes->size,
+//             attributes->permissions,
+//             attributes->owner,
+//             attributes->uid,
+//             attributes->group,
+//             attributes->gid);
+        BOOST_LOG_TRIVIAL(info) << "Directory name = " << attributes->name;
+        files.push_back(attributes);
+    }
+
     if (!sftp_dir_eof(dir)) {
         BOOST_LOG_TRIVIAL(error) << "Can't list directory: " << ssh_get_error(server->getSsh());
-        Server::SERVER_ERROR(2, "Can't list directory: ",
-                                     ssh_get_error(server->getSsh()));
         sftp_closedir(dir);
         return;
     }
-
-    while ((attributes = sftp_readdir(server->getSftp(), dir)) != NULL)
-        files.push_back(attributes);
 
     rc = sftp_closedir(dir);
     if (rc != SSH_OK) {
@@ -123,24 +131,24 @@ void SFTPInterface::download(string fileName){
     char buffer[MAX_XFER_BUF_SIZE];
     int nbytes, nwritten, rc;
     int fd;
-    string serverDir = nameDir + "/" + fileName;
+    string serverDir = "/" + fileName;
     access_type = O_RDONLY;
      
      
-    file = sftp_open(server->getSftp(), serverDir.c_str(), access_type, 0);
+    file = sftp_open(server->getSftp(), fileName.c_str(), access_type, 0);
 
-    if (file == NULL) {
+    if (file == nullptr) {
         BOOST_LOG_TRIVIAL(error) << "Can't open file for reading: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-        Server::SERVER_ERROR(3, "Can't open file for reading: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+//        Server::SERVER_ERROR(3, "Can't open file for reading: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
         return;
     }
      
-    string PCDir = "~/Downloads/" + fileName;
+    string PCDir = "~/Downloads/";
 
-    fd = open(PCDir.c_str(), O_CREAT);
+    fd = open(fileName.c_str(), O_CREAT);
     if (fd < 0) {
-        BOOST_LOG_TRIVIAL(error) << "Can't open file for writing: " << serverDir.c_str() << ssh_get_error(server->getSsh());
-        Server::SERVER_ERROR(3, "Can't open file for writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
+        BOOST_LOG_TRIVIAL(error) << "Can't open file for writing: " << PCDir.c_str() << " " << strerror(errno);
+//        Server::SERVER_ERROR(3, "Can't open file for writing: ", serverDir.c_str(), ssh_get_error(server->getSsh()));
         return;
     }
 

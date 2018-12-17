@@ -1,44 +1,34 @@
-//#include <stdlib.h>
-//#include <iostream>
-//#include "catch.h"
 //#include "../MyPCFiles-client/mainwindow.h"
-//#include <../MyPCFiles-client/server.h>
 //#include "../MyPCFiles-client/filelistwidget.h";
-//#include "../MyPCFiles-client/sftpinterfacewidget.h";
 //#include "../MyPCFiles-client/serverlistwidget.h";
+#include "../server.h"
+#include "../sftpinterface.h"
+#include <QtTest>
 
-//#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-
-#include <QtTest/QtTest>
-
-class TestQString: public QObject
+class Test: public QObject
 {
     Q_OBJECT
 private slots:
-    void toUpper();
+
+    void ServerTest() {
+        class Server server("demo", "password", "test.rebex.net", 22, "Test.rebex.net");
+
+        SFTPInterface sftpinterface(&server);
+        sftpinterface.open_connection();
+
+        sftpinterface.changeDir("/");
+        sftpinterface.download("readme.txt");
+
+        sftpinterface.changeDir("pub");
+        sftpinterface.upload("readme.txt");
+
+        sftpinterface.close_connection();
+    }
+
 };
 
-void TestQString::toUpper()
-{
-    QString str = "Hello";
-    QCOMPARE(str.toUpper(), QString("HELLO"));
-}
-
-QTEST_MAIN(TestQString)
+QTEST_MAIN(Test)
 #include "interfaceTest.moc"
-
-//TEST_CASE("Server class") {
-
-//    // if there is no such kind of class test will fail
-//    Server server("username", "host", 8080);
-//    // if there is no connect method function will fail
-//    server.connect();
-//    // if there is no disconnect method function will fail
-//    server.disconnect();
-//    // if there is no destructor test will fail
-//    server.~Server();
-//}
-
 
 
 //TEST_CASE("FileListWidget class") {

@@ -46,7 +46,7 @@ HEADERS += \
     serverlist.h
 
 HEADERS += \
-        mainwindow.h \ 
+        mainwindow.h \
     sftpinterfacewidget.h
 
 # Default rules for deployment.
@@ -63,35 +63,31 @@ DISTFILES +=
 RESOURCES += \
     res.qrc
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/libssh/0.8.4/lib/release/ -lssh.4.7.1
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/libssh/0.8.4/lib/debug/ -lssh.4.7.1
-else:unix: LIBS += -L$$PWD/../../../../../usr/local/Cellar/libssh/0.8.4/lib/ -lssh.4.7.1
 
-INCLUDEPATH += $$PWD/../../../../../usr/local/Cellar/libssh/0.8.4/include
-DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/libssh/0.8.4/include
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/lib/ -lssh
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/lib/release/ -lboost_log
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/lib/debug/ -lboost_log
-else:unix: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lboost_log
+DEPENDPATH += $$PWD/../../../../../usr/include
 
-INCLUDEPATH += $$PWD/../../../../../usr/local/include
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lboost_date_time
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libboost_date_time.a
+
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lboost_log
+
 DEPENDPATH += $$PWD/../../../../../usr/local/include
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/release/libboost_log.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/debug/libboost_log.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/release/boost_log.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/debug/boost_log.lib
-else:unix: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libboost_log.a
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libboost_log.a
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/lib/release/ -lboost_log_setup
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/lib/debug/ -lboost_log_setup
-else:unix: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lboost_log_setup
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lboost_log_setup
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libboost_log_setup.a
 
-INCLUDEPATH += $$PWD/../../../../../usr/local/include
-DEPENDPATH += $$PWD/../../../../../usr/local/include
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lboost_filesystem
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libboost_filesystem.a
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/release/libboost_log_setup.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/debug/libboost_log_setup.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/release/boost_log_setup.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/debug/boost_log_setup.lib
-else:unix: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libboost_log_setup.a
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lboost_system
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libboost_system.a
+
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lboost_thread
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libboost_thread.a
+
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lboost_chrono
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libboost_chrono.a
